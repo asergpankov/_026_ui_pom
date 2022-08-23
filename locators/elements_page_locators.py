@@ -44,4 +44,13 @@ class WebTablePageLocators:
     SEARCH_INPUT = (By.CSS_SELECTOR, "input#searchBox")
     DELETE_BTN = (By.CSS_SELECTOR, "span[title=Delete]")
     ROW_PARENT = (By.CSS_SELECTOR, "div.rt-tbody")
-    ROW_PARENT_IN = (By.CSS_SELECTOR, "div.rt-tr-group")
+    ROW_LINES_ALL = (By.CSS_SELECTOR, "div.rt-tr-group")
+    ROW_LINE_IN = (By.CSS_SELECTOR, "div[class$=-odd] ")
+
+    UPDATE_BTN = (By.CSS_SELECTOR, "span[title=Edit]")
+    AGE_FIELD_INPUT = (By.CSS_SELECTOR, "input#age")
+    SUBMIT_BTN_UPDATE = (By.CSS_SELECTOR, "button[type=submit]")
+
+    DELETE_PERSON_INFO_BTN = (By.CSS_SELECTOR, "span[title=Delete]")
+    NO_ROWS_DATA = (By.CSS_SELECTOR, "div.rt-noData")
+    COUNT_ROW_LIST = (By.CSS_SELECTOR, 'select[aria-label="rows per page"]')

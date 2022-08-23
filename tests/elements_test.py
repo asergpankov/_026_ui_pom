@@ -1,6 +1,8 @@
 from random import randint
 from time import sleep
 
+from selenium.webdriver.common.by import By
+
 from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage
 
 
@@ -57,3 +59,28 @@ class TestElements:
             web_table_page.search_added_person(key_word)
             table_line_data = web_table_page.check_added_person()
             assert key_word in table_line_data[0], "key_word NOT in person data"
+
+        def test_web_table_update_person_info(self, driver):
+            web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
+            web_table_page.open()
+            lastname = web_table_page.add_new_person()[1]
+            web_table_page.search_added_person(lastname)
+            age = web_table_page.update_person_info()
+            row = web_table_page.check_added_person()
+            assert str(age) in row[0]
+
+        def test_web_table_delete_person_info(self, driver):
+            web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
+            web_table_page.open()
+            email = web_table_page.add_new_person()[3]
+            web_table_page.search_added_person(email)
+            web_table_page.delete_person_info()
+            del_text = web_table_page.check_deleted_person()
+            assert del_text == "No rows found"
+
+        def test_web_table_change_row_count(self, driver):
+            web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
+            web_table_page.open()
+            count = web_table_page.select_up_to_some_rows()
+            assert count == [5, 10, 20, 25, 50, 100]
+

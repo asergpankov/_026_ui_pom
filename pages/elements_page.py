@@ -1,6 +1,7 @@
 import random
 from time import sleep
 
+from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from generator.generator import generated_person
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
@@ -112,7 +113,39 @@ class WebTablePage(BasePage):
     def search_added_person(self, key_word):
         self.element_is_visible(self.locators.SEARCH_INPUT).send_keys(key_word)
 
-    def check_search_person(self, key_word):
-        del_btn = self.element_is_present(self.locators.ROW_PARENT)
-        row = del_btn.find_element(self.locators.ROW_PARENT_IN)
+    def check_search_person(self):
+        table_lines = self.element_is_present(self.locators.ROW_LINES_ALL)
+        row = table_lines.find_element(self.locators.ROW_LINE_IN)
         return row.text.splitlines()
+
+    def update_person_info(self):
+        person_info = next(generated_person())
+        age = person_info.age
+        self.element_is_visible(self.locators.UPDATE_BTN).click()
+        self.element_is_visible(self.locators.AGE_FIELD_INPUT).clear()
+        self.element_is_visible(self.locators.AGE_FIELD_INPUT).send_keys(age)
+        self.element_is_visible(self.locators.SUBMIT_BTN_UPDATE).click()
+        sleep(2)
+        return age
+
+    def delete_person_info(self):
+        person_info = next(generated_person())
+        email = person_info.email
+        self.element_is_visible(self.locators.DELETE_PERSON_INFO_BTN).click()
+        sleep(2)
+    def check_deleted_person(self):
+        return self.element_is_present(self.locators.NO_ROWS_DATA).text
+
+    def select_up_to_some_rows(self):
+        count = [5, 10, 20, 25, 50, 100]
+        data = []
+        for num in count:
+            count_row_button = self.go_to_element(self.element_is_visible.locators.COUNT_ROW_LIST))
+            count_row_button.click()
+            self.element_is_visible(By.CSS_SELECTOR, f"options[value={num}]").click()
+            data.append(self.check_count_rows())
+        return data
+
+    def check_count_rows(self):
+        rows_list = self.elements_are_present(self.locators.PERSON_LINE_IN_LIST)
+        return len(rows_list)
