@@ -54,3 +54,14 @@ class WebTablePageLocators:
     DELETE_PERSON_INFO_BTN = (By.CSS_SELECTOR, "span[title=Delete]")
     NO_ROWS_DATA = (By.CSS_SELECTOR, "div.rt-noData")
     COUNT_ROW_LIST = (By.CSS_SELECTOR, 'select[aria-label="rows per page"]')
+
+
+class ButtonsPageLocators:
+    DOUBLE_CLICK_BTN = (By.CSS_SELECTOR, "button#doubleClickBtn")
+    RIGHT_CLICK_BTN = (By.CSS_SELECTOR, "button#rightClickBtn")
+    # ORDINARY_CLICK_BTN = (By.CSS_SELECTOR, "div[class='mt-4']:nth-child(3n)")
+    ORDINARY_CLICK_BTN = (By.XPATH, "//div[3]/button")
+
+    SUCCESS_DOUBLE = (By.CSS_SELECTOR, " p#doubleClickMessage")
+    SUCCESS_RIGHT = (By.CSS_SELECTOR, " p#rightClickMessage")
+    SUCCESS_CLICK_ME = (By.CSS_SELECTOR, "p#dynamicClickMessage")

@@ -5,7 +5,7 @@ from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from generator.generator import generated_person
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
-    WebTablePageLocators
+    WebTablePageLocators, ButtonsPageLocators
 from pages.base_page import BasePage
 
 
@@ -125,22 +125,22 @@ class WebTablePage(BasePage):
         self.element_is_visible(self.locators.AGE_FIELD_INPUT).clear()
         self.element_is_visible(self.locators.AGE_FIELD_INPUT).send_keys(age)
         self.element_is_visible(self.locators.SUBMIT_BTN_UPDATE).click()
-        sleep(2)
-        return age
+        return str(age)
 
     def delete_person_info(self):
         person_info = next(generated_person())
         email = person_info.email
         self.element_is_visible(self.locators.DELETE_PERSON_INFO_BTN).click()
-        sleep(2)
+
     def check_deleted_person(self):
         return self.element_is_present(self.locators.NO_ROWS_DATA).text
 
-    def select_up_to_some_rows(self):
+    def iterate_rows(self):
         count = [5, 10, 20, 25, 50, 100]
         data = []
         for num in count:
-            count_row_button = self.go_to_element(self.element_is_visible.locators.COUNT_ROW_LIST))
+            count_row_button = self.element_is_visible(self.locators.COUNT_ROW_LIST)
+            self.go_to_element(count_row_button)
             count_row_button.click()
             self.element_is_visible(By.CSS_SELECTOR, f"options[value={num}]").click()
             data.append(self.check_count_rows())
@@ -149,3 +149,21 @@ class WebTablePage(BasePage):
     def check_count_rows(self):
         rows_list = self.elements_are_present(self.locators.PERSON_LINE_IN_LIST)
         return len(rows_list)
+
+
+class ButtonsPage(BasePage):
+    locators = ButtonsPageLocators()
+
+    def click_on_different_buttons(self, type_click):
+        if type_click == "double":
+            self.double_click_action(self.element_is_visible(self.locators.DOUBLE_CLICK_BTN))
+            return self.check_click_on_different_buttons(self.locators.SUCCESS_DOUBLE)
+        if type_click == "right":
+            self.right_click_action(self.element_is_visible(self.locators.RIGHT_CLICK_BTN))
+            return self.check_click_on_different_buttons(self.locators.SUCCESS_RIGHT)
+        if type_click == "click":
+            self.element_is_visible(self.locators.ORDINARY_CLICK_BTN).click()
+            return self.check_click_on_different_buttons(self.locators.SUCCESS_CLICK_ME)
+
+    def check_click_on_different_buttons(self, element):
+        return self.element_is_visible(element).text
