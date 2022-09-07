@@ -4,7 +4,7 @@ from time import sleep
 import pytest
 from selenium.webdriver.common.by import By
 
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage
 
 
 class TestElements:
@@ -97,3 +97,17 @@ class TestElements:
             assert double == "You have done a double click", "DoubleClick button was not press correctly"
             assert right == "You have done a right click", "RightClick button was not press correctly"
             assert click == "You have done a dynamic click", "ClickMe  button was not press correctly"
+
+    class TestLinks:
+        def test_check_home_link(self, driver):
+            links_page = LinksPage(driver, "https://demoqa.com/links")
+            links_page.open()
+            link_href, current_url = links_page.check_new_tab_home_link()
+            assert link_href == current_url, "[WARN] -- broken link or incorrect url"
+
+        def test_check_bad_request_link(self, driver):
+            links_page = LinksPage(driver, "https://demoqa.com/links")
+            links_page.open()
+            response_code = links_page.check_new_tab_bad_request_link("https://demoqa.com/bad-request")
+            assert response_code == 400
+

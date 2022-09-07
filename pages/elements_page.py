@@ -1,11 +1,12 @@
 import random
 from time import sleep
 
+import requests
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from generator.generator import generated_person
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
-    WebTablePageLocators, ButtonsPageLocators
+    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators
 from pages.base_page import BasePage
 
 
@@ -61,6 +62,7 @@ class CheckBoxPage(BasePage):
     #         checkbox_title = box.find_element_by_css_selector(self.locators.LABEL)
     #         data.append(checkbox_title.text)
     #     print(data)
+    #       example // nav_bar_menu = [x.text for x in all_list if len(x.text) > 0]
 
 
 class RadioButtonPage(BasePage):
@@ -167,3 +169,26 @@ class ButtonsPage(BasePage):
 
     def check_click_on_different_buttons(self, element):
         return self.element_is_visible(element).text
+
+
+class LinksPage(BasePage):
+    locators = LinksPageLocators()
+
+    def check_new_tab_home_link(self):
+        home_link = self.element_is_visible(self.locators.HOME_LINK)
+        link_href = home_link.get_attribute('href')
+        request = requests.get(link_href)
+        if request.status_code == 200:
+            home_link.click()
+            self.driver.switch_to.window(self.driver.window_handles[1])
+            url = self.driver.current_url
+            return link_href, url
+        else:
+            return link_href, request.status_code
+
+    def check_new_tab_bad_request_link(self, url):
+        request = requests.get(url)
+        if request.status_code == 200:
+            self.element_is_present(self.locators.BAD_REQUEST_LINK).click()
+        else:
+            return request.status_code
