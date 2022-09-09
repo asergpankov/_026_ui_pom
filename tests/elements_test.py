@@ -18,16 +18,17 @@ class TestElements:
             assert email == output_email
             assert current_address == output_current_address
             assert permanent_address == output_permanent_address
-            # assert input_data == output_data
+            # assert input_data == output_data, "[WARN] -- data has not been inputed correctly"
 
     class TestCheckBox:
         def test_checkbox_page(self, driver):
             checkbox_page = CheckBoxPage(driver, "https://demoqa.com/checkbox")
             checkbox_page.open()
-            checkbox_page.open_all_checkboxes()
+            checkbox_page.expand_all_checkboxes()
             checkbox_page.click_random_checkbox()
-            # checkbox_page.get_marked_checkboxes()
-            sleep(2)
+            input_data = checkbox_page.get_marked_checkboxes()
+            output_data = checkbox_page.get_output_result()
+            assert input_data == output_data, "[WARN] -- checkboxes have not been selected"
 
     class TestRadioButton:
         @pytest.mark.skip(reason='postponed for some reasons')
@@ -51,7 +52,7 @@ class TestElements:
             web_table_page.open()
             new_person = web_table_page.add_new_person()
             table_result = web_table_page.check_added_person()
-            assert new_person in table_result
+            assert new_person in table_result, "[WARN] -- 'person_data' not in table"
             sleep(2)
 
         def test_web_table_search_person(self, driver):
@@ -60,7 +61,7 @@ class TestElements:
             key_word = web_table_page.add_new_person()[randint(0, 5)]
             web_table_page.search_added_person(key_word)
             table_line_data = web_table_page.check_added_person()
-            assert key_word in table_line_data[0], "key_word NOT in person data"
+            assert key_word in table_line_data[0], "[WARN] -- 'key_word' NOT in person data"
 
         def test_web_table_update_person_info(self, driver):
             web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")

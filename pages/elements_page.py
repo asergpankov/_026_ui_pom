@@ -38,31 +38,30 @@ class TextBoxPage(BasePage):
 class CheckBoxPage(BasePage):
     locators = CheckBoxPageLocators()
 
-    def open_all_checkboxes(self):
+    def expand_all_checkboxes(self):
         self.element_is_visible(self.locators.EXPAND_ALL_BUTTON).click()
 
     def click_random_checkbox(self):
         checkboxes_list = self.elements_are_visible(self.locators.CHECKBOXES_LIST)
         count = 21
         while count != 0:
-            checkbox = checkboxes_list[random.randint(1, 16)]
+            checkbox = checkboxes_list[random.randint(1, 15)]
             if count > 0:
                 self.go_to_element(checkbox)
                 checkbox.click()
-                # print(checkbox.text)
                 count -= 1
             else:
                 break
 
-    # def get_marked_checkboxes(self):
-    #     marked_checkboxes_list = self.elements_are_present(self.locators.MARKED_CHECKBOXES)
-    #     data = []
-    #     for box in marked_checkboxes_list:
-    #         # checkbox_title = box.find_element_by_xpath(self.locators.CHECKBOX_TITLE)
-    #         checkbox_title = box.find_element_by_css_selector(self.locators.LABEL)
-    #         data.append(checkbox_title.text)
-    #     print(data)
-    #       example // nav_bar_menu = [x.text for x in all_list if len(x.text) > 0]
+    def get_marked_checkboxes(self):
+        marked_checkboxes_list = self.elements_are_present(self.locators.MARKED_CHECKBOXES)
+        data = [title.find_element(By.XPATH, self.locators.CHECKBOX_TITLE).text for title in marked_checkboxes_list]
+        return str(data).replace(' ', '').replace('.doc', '').lower()
+
+    def get_output_result(self):
+        result_list = self.elements_are_present(self.locators.OUTPUT_RESULTS)
+        data = [item.text for item in result_list if len(item.text) > 0]
+        return str(data).replace(' ', '').lower()
 
 
 class RadioButtonPage(BasePage):

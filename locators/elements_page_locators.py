@@ -18,8 +18,8 @@ class CheckBoxPageLocators:
     EXPAND_ALL_BUTTON = (By.CSS_SELECTOR, "button[aria-label='Expand all']")
     CHECKBOXES_LIST = (By.CSS_SELECTOR, "span.rct-title")
     MARKED_CHECKBOXES = (By.CSS_SELECTOR, "svg.rct-icon-check")
-    # CHECKBOX_TITLE = "span.rct-title"
-    CHECKBOX_TITLE = ".//ancestor::span[@class='rct-title']"
+    CHECKBOX_TITLE = ".//ancestor::span[@class='rct-text']"     # ancestor -- "Выбирает всех предков текущего узла"
+    OUTPUT_RESULTS = (By.CSS_SELECTOR, "span.text-success")
     LABEL = "label span.rct-title"
 
 
