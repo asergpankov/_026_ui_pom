@@ -1,5 +1,4 @@
 from random import randint
-
 from data.data import Person
 from faker import Faker
 
@@ -20,3 +19,8 @@ def generated_person():
         current_address=faker_ru.address(),
         permanent_address=faker_ru.address()
     )
+
+
+def generated_file(tmp_path):
+    p = tmp_path.join("test_hello.txt")
+    p.write("test_content")

@@ -1,14 +1,11 @@
 import random
-from time import sleep
-
 import requests
-from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from generator.generator import generated_person
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
-    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators
+    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, UploadAndDownloadLocators
 from pages.base_page import BasePage
-
+from time import sleep
 
 class TextBoxPage(BasePage):
     locators = TextBoxPageLocators()
@@ -185,9 +182,19 @@ class LinksPage(BasePage):
         else:
             return link_href, request.status_code
 
-    def check_new_tab_bad_request_link(self, url):
+    def check_broken_link(self, url):
         request = requests.get(url)
         if request.status_code == 200:
             self.element_is_present(self.locators.BAD_REQUEST_LINK).click()
         else:
             return request.status_code
+
+
+class UploadAndDownload(BasePage):
+    locators = UploadAndDownloadLocators()
+
+    def upload_file(self, path):
+        self.element_is_present(self.locators.UPLOAD_FILE).send_keys(path)
+        sleep(5)
+
+    # /home/srghei/PycharmProjects/test_framework_UI

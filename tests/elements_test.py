@@ -1,10 +1,8 @@
 from random import randint
 from time import sleep
-
 import pytest
-from selenium.webdriver.common.by import By
-
-from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
+    UploadAndDownload
 
 
 class TestElements:
@@ -52,7 +50,6 @@ class TestElements:
             new_person = web_table_page.add_new_person()
             table_result = web_table_page.check_added_person()
             assert new_person in table_result, "[WARN] -- 'person_data' not in table"
-            sleep(2)
 
         def test_web_table_search_person(self, driver):
             web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
@@ -105,9 +102,21 @@ class TestElements:
             link_href, current_url = links_page.check_new_tab_home_link()
             assert link_href == current_url, "[WARN] -- broken link or incorrect url"
 
-        def test_check_bad_request_link(self, driver):
+        def test_check_broken_link(self, driver):
             links_page = LinksPage(driver, "https://demoqa.com/links")
             links_page.open()
-            response_code = links_page.check_new_tab_bad_request_link("https://demoqa.com/bad-request")
+            response_code = links_page.check_broken_link("https://demoqa.com/bad-request")
             assert response_code == 400
+
+    class TestUploadAndDownload:
+        def test_upload_file(self, driver, create_file):
+            upload_page = UploadAndDownload(driver, "https://demoqa.com/upload-download")
+            upload_page.open()
+            upload_page.upload_file(create_file)
+            sleep(5)
+
+        # def test_download_file(self, driver):
+        #     download_page = UploadAndDownload(driver, "https://demoqa.com/upload-download")
+        #     download_page.open()
+
 

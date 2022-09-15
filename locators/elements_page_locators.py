@@ -18,7 +18,7 @@ class CheckBoxPageLocators:
     EXPAND_ALL_BUTTON = (By.CSS_SELECTOR, "button[aria-label='Expand all']")
     CHECKBOXES_LIST = (By.CSS_SELECTOR, "span.rct-title")
     MARKED_CHECKBOXES = (By.CSS_SELECTOR, "svg.rct-icon-check")
-    CHECKBOX_TITLE = ".//ancestor::span[@class='rct-text']"     # ancestor -- "Выбирает всех предков текущего узла"
+    CHECKBOX_TITLE = ".//ancestor::span[@class='rct-text']"  # ancestor -- "Выбирает всех предков текущего узла"
     OUTPUT_RESULTS = (By.CSS_SELECTOR, "span.text-success")
     LABEL = "label span.rct-title"
 
@@ -70,3 +70,7 @@ class ButtonsPageLocators:
 class LinksPageLocators:
     HOME_LINK = (By.CSS_SELECTOR, "a#simpleLink")
     BAD_REQUEST_LINK = (By.CSS_SELECTOR, "a#bad-request")
+
+
+class UploadAndDownloadLocators:
+    UPLOAD_FILE = (By.CSS_SELECTOR, "input#uploadFile")

@@ -12,5 +12,13 @@ def driver():
     driver_service = Service(ChromeDriverManager().install())
     driver = Chrome(service=driver_service)
     driver.maximize_window()
+    # driver.set_window_size(1400, 1000)
     yield driver
     driver.quit()
+
+@pytest.fixture()
+def create_file(tmp_path):
+    f = tmp_path / 'test_filename.txt'
+    f.write_text('test_content_inside')
+    return f
+    # assert os.path.exists(f) is False
