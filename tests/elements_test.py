@@ -31,20 +31,19 @@ class TestElements:
             assert input_data == output_data, "[WARN] -- checkboxes have not been selected"
 
     class TestRadioButton:
-        @pytest.mark.skip(reason='postponed for some reasons')
+        @pytest.mark.skip(reason="postponed, 'No' button has a bug during selection")
         def test_radio_button(self, driver):
             radio_button_page = RadioButtonPage(driver, "https://demoqa.com/radio-button")
             radio_button_page.open()
-            # radio_button_page.click_on_radio_button('Yes')
-            # output_yes = radio_button_page.get_output_result()
-            # radio_button_page.click_on_radio_button('Impressive')
-            # output_impressive = radio_button_page.get_output_result()
-            # radio_button_page.click_on_radio_button('No')
-            # output_no = radio_button_page.get_output_result()
-            # assert output_yes == 'Yes'
-            # assert output_impressive == 'Impressive'
-            # assert output_no == 'No'
-            sleep(2)
+            radio_button_page.click_on_radio_button('yes')
+            output_yes = radio_button_page.get_output_result()
+            radio_button_page.click_on_radio_button('impressive')
+            output_impressive = radio_button_page.get_output_result()
+            radio_button_page.click_on_radio_button('no')
+            output_no = radio_button_page.get_output_result()
+            assert output_yes == 'Yes'
+            assert output_impressive == 'Impressive'
+            assert output_no == 'No', "[WARN! BUG is here] -- 'No' btn cannot be selected"
 
     class TestWebTable:
         def test_web_table_add_person(self, driver):
