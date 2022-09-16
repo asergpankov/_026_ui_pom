@@ -7,6 +7,7 @@ from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLoc
 from pages.base_page import BasePage
 from time import sleep
 
+
 class TextBoxPage(BasePage):
     locators = TextBoxPageLocators()
 
@@ -103,9 +104,7 @@ class WebTablePage(BasePage):
 
     def check_added_person(self):
         persons_lines = self.elements_are_present(self.locators.PERSON_LINE_IN_LIST)
-        data = []
-        for item in persons_lines:
-            data.append(item.text.splitlines())
+        data = [item.text.splitlines() for item in persons_lines]
         return data
 
     def search_added_person(self, key_word):
@@ -194,7 +193,12 @@ class UploadAndDownload(BasePage):
     locators = UploadAndDownloadLocators()
 
     def upload_file(self, path):
-        self.element_is_present(self.locators.UPLOAD_FILE).send_keys(path)
-        sleep(5)
+        self.element_is_visible(self.locators.UPLOAD_FILE).send_keys(path)
+        get_path_with_name = self.element_is_visible(self.locators.UPLOADED_RESULT).text
+        return get_path_with_name.split('\\')[-1]   # get name only
 
-    # /home/srghei/PycharmProjects/test_framework_UI
+    def double_left_click(self):
+        self.double_click_action(self.element_is_visible(self.locators.UPLOAD_FILE))
+
+    def check_double_left_click(self, element):
+        return self.element_is_visible(element).text

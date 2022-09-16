@@ -73,4 +73,6 @@ class LinksPageLocators:
 
 
 class UploadAndDownloadLocators:
-    UPLOAD_FILE = (By.CSS_SELECTOR, "input#uploadFile")
+    UPLOAD_FILE = (By.CSS_SELECTOR, "input[type=file]")
+    UPLOADED_RESULT = (By.CSS_SELECTOR, "p#uploadedFilePath")
+    DOWNLOAD_FILE = (By.CSS_SELECTOR, "input[id=downloadButton]")

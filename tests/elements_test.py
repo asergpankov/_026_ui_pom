@@ -1,3 +1,4 @@
+import os
 from random import randint
 from time import sleep
 import pytest
@@ -109,14 +110,16 @@ class TestElements:
             assert response_code == 400
 
     class TestUploadAndDownload:
-        def test_upload_file(self, driver, create_file):
+        def test_upload_file(self, driver, tmp_file):
+            file_name, path = tmp_file
             upload_page = UploadAndDownload(driver, "https://demoqa.com/upload-download")
             upload_page.open()
-            upload_page.upload_file(create_file)
-            sleep(5)
+            get_name = upload_page.upload_file(path)
+            assert get_name == file_name
+            os.remove(path)
+            assert os.path.exists(path) is False
 
-        # def test_download_file(self, driver):
-        #     download_page = UploadAndDownload(driver, "https://demoqa.com/upload-download")
-        #     download_page.open()
-
-
+        @pytest.mark.skip(reason='not ready yet')
+        def test_download_file(self, driver):
+            download_page = UploadAndDownload(driver, "https://demoqa.com/upload-download")
+            download_page.open()
