@@ -75,4 +75,10 @@ class LinksPageLocators:
 class UploadAndDownloadLocators:
     UPLOAD_FILE = (By.CSS_SELECTOR, "input[type=file]")
     UPLOADED_RESULT = (By.CSS_SELECTOR, "p#uploadedFilePath")
-    DOWNLOAD_FILE = (By.CSS_SELECTOR, "input[id=downloadButton]")
+    DOWNLOAD_FILE = (By.CSS_SELECTOR, "a[id=downloadButton]")
+
+
+class DynamicPropertiesLocators:
+    WILL_ENABLE_BTN = (By.CSS_SELECTOR, "button#enableAfter")
+    COLOR_CHANGE_BTN = (By.CSS_SELECTOR, "button#colorChange")
+    VISIBLE_AFTER_5_SEC_BTN = (By.CSS_SELECTOR, "button#visibleAfter")

@@ -22,9 +22,9 @@ def generated_person():
     )
 
 
-def test_generated_file():
-    # path = '/home/srghei/PycharmProjects/test_framework_UI/generator/test_file.txt'
-    with open('test_file.txt', 'w') as f:
-        f.write(f'test_content\n')
-        # return f
-        print(f.name)
+# def test_generated_file():
+#     # path = '/home/srghei/PycharmProjects/test_framework_UI/generator/test_file.txt'
+#     with open('test_file.txt', 'w') as f:
+#         f.write(f'test_content\n')
+#         # return f
+#         print(f.name)

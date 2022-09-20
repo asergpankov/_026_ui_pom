@@ -3,7 +3,7 @@ from random import randint
 from time import sleep
 import pytest
 from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
-    UploadAndDownload
+    UploadAndDownload, DynamicProperties
 
 
 class TestElements:
@@ -119,7 +119,34 @@ class TestElements:
             os.remove(path)
             assert os.path.exists(path) is False
 
-        @pytest.mark.skip(reason='not ready yet')
+        @pytest.mark.skip(reason='not ready yet. need correct decoding')
         def test_download_file(self, driver):
             download_page = UploadAndDownload(driver, "https://demoqa.com/upload-download")
             download_page.open()
+            download_page.download_file()
+            assert os.path.isfile() is True
+            os.remove()
+
+
+class TestDynamicProperties:
+
+    # @pytest.mark.skip(reason='BUG is here. After 4 sec expect non-clickable on btn; act.res- btn clickable before 5 sec')
+    def test_will_enable_5_seconds(self, driver):
+        will_enable_5_seconds = DynamicProperties(driver, "https://demoqa.com/dynamic-properties")
+        will_enable_5_seconds.open()
+        enable_btn = will_enable_5_seconds.check_enable_btn_after_5_sec()
+        assert enable_btn is True
+
+    # @pytest.mark.skip(reason='BUG is here. After 4 sec expect same colors; act.res- clr are different')
+    def test_color_change_btn(self, driver):
+        color_change_btn = DynamicProperties(driver, "https://demoqa.com/dynamic-properties")
+        color_change_btn.open()
+        color_before, color_after = color_change_btn.check_color_change()
+        assert color_before != color_after
+
+    # @pytest.mark.skip(reason='BUG is here. After 4 sec expect non visibility of btn; act.res- btn appears before 5 sec')
+    def test_visible_after_5_seconds(self, driver):
+        visible_after_5_seconds = DynamicProperties(driver, "https://demoqa.com/dynamic-properties")
+        visible_after_5_seconds.open()
+        appear_btn = visible_after_5_seconds.check_appear_btn()
+        assert appear_btn is True

@@ -1,9 +1,12 @@
+import base64
 import random
+import time
+
 import requests
 from selenium.webdriver.common.by import By
 from generator.generator import generated_person
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
-    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, UploadAndDownloadLocators
+    WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, UploadAndDownloadLocators, DynamicPropertiesLocators
 from pages.base_page import BasePage
 from time import sleep
 
@@ -195,10 +198,42 @@ class UploadAndDownload(BasePage):
     def upload_file(self, path):
         self.element_is_visible(self.locators.UPLOAD_FILE).send_keys(path)
         get_path_with_name = self.element_is_visible(self.locators.UPLOADED_RESULT).text
-        return get_path_with_name.split('\\')[-1]   # get name only
+        return get_path_with_name.split('\\')[-1]  # get name only
 
-    def double_left_click(self):
-        self.double_click_action(self.element_is_visible(self.locators.UPLOAD_FILE))
+    def download_file(self):
+        link = self.element_is_visible(self.locators.DOWNLOAD_FILE).get_attribute('href').split(',')
+        link_decoded = base64.b64decode(link[1])
+        try:
+            response = requests.get(link_decoded, allow_redirects=True)
+            with open('test_decoded.jpg', 'wb') as file:
+                file.write(response.content)
+        except Exception as ex:
+            return 'Check url is correct'
 
-    def check_double_left_click(self, element):
-        return self.element_is_visible(element).text
+
+class DynamicProperties(BasePage):
+    locators = DynamicPropertiesLocators()
+
+    def check_enable_btn_after_5_sec(self):
+        try:
+            self.element_is_clickable(self.locators.WILL_ENABLE_BTN, 4)
+        # 'After 4 sec expect non-clickable on btn; act.res- btn clickable before 5 sec'
+        except TimeoutError as tex:
+            return False
+        return True
+
+    def check_color_change(self):
+        color_change_btn = self.element_is_present(self.locators.COLOR_CHANGE_BTN)
+        color_change_btn_before = color_change_btn.value_of_css_property('color')
+        time.sleep(5)  # after 4 sec expect same colors; act.res is different
+        color_change_btn_after = color_change_btn.value_of_css_property('color')
+        # print(color_change_btn_before, color_change_btn_after)
+        return color_change_btn_before, color_change_btn_after
+
+    def check_appear_btn(self):
+        try:
+            self.element_is_visible(self.locators.VISIBLE_AFTER_5_SEC_BTN)
+        # 'After 4 sec expect non visibility of btn; act.res- btn appears before 5 sec'
+        except TimeoutError as tex:
+            return False
+        return True
