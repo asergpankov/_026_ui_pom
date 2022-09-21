@@ -139,10 +139,10 @@ class WebTablePage(BasePage):
         count = [5, 10, 20, 25, 50, 100]
         data = []
         for num in count:
-            count_row_button = self.element_is_visible(self.locators.COUNT_ROW_LIST)
+            count_row_button = self.element_is_present(self.locators.COUNT_ROW_LIST)
             self.go_to_element(count_row_button)
             count_row_button.click()
-            self.element_is_visible(By.CSS_SELECTOR, f"options[value={num}]").click()
+            self.element_is_visible(By.CSS_SELECTOR, f"option[value='{num}']").click()
             data.append(self.check_count_rows())
         return data
 
