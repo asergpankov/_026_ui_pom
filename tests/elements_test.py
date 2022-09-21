@@ -150,3 +150,5 @@ class TestDynamicProperties:
         visible_after_5_seconds.open()
         appear_btn = visible_after_5_seconds.check_appear_btn()
         assert appear_btn is True
+
+
