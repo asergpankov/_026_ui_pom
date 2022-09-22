@@ -48,7 +48,7 @@ class StudentRegistrationForm(BasePage):
         submit_btn.click()
         return person_info
 
-    def check_result_table_values(self):
+    def check_data_from_table_values(self):
         res_values = self.elements_are_present(self.locators.RESULT_TABLE_VALUES)
         data = [item.text for item in res_values]
         return data
