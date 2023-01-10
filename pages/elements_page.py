@@ -4,7 +4,7 @@ import time
 
 import requests
 from selenium.webdriver.common.by import By
-from generator.generator import generated_person
+from generator.generator import generate_person_data
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
     WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, UploadAndDownloadLocators, DynamicPropertiesLocators
 from pages.base_page import BasePage
@@ -14,8 +14,8 @@ from time import sleep
 class TextBoxPage(BasePage):
     locators = TextBoxPageLocators()
 
-    def fill_all_fields(self):
-        person_info = next(generated_person())
+    def fill_all_text_boxes(self):
+        person_info = next(generate_person_data())
         full_name = person_info.full_name
         email = person_info.email
         current_address = person_info.current_address
@@ -29,10 +29,10 @@ class TextBoxPage(BasePage):
         return full_name, email, current_address, permanent_address
 
     def check_filled_form(self):
-        full_name = self.element_is_present(self.locators.CREATED_FULL_NAME).text.split(":")[1]
-        email = self.element_is_present(self.locators.CREATED_EMAIL).text.split(":")[1]
-        current_address = self.element_is_present(self.locators.CREATED_CURRENT_ADDRESS).text.split(":")[1]
-        permanent_address = self.element_is_present(self.locators.CREATED_PERMANENT_ADDRESS).text.split(":")[1]
+        full_name = self.element_is_present(self.locators.OUTPUT_FULL_NAME).text.split(":")[1]
+        email = self.element_is_present(self.locators.OUTPUT_EMAIL).text.split(":")[1]
+        current_address = self.element_is_present(self.locators.OUTPUT_CURRENT_ADDRESS).text.split(":")[1]
+        permanent_address = self.element_is_present(self.locators.OUTPUT_PERMANENT_ADDRESS).text.split(":")[1]
         return full_name, email, current_address, permanent_address
 
 
@@ -44,23 +44,20 @@ class CheckBoxPage(BasePage):
 
     def click_random_checkbox(self):
         checkboxes_list = self.elements_are_visible(self.locators.CHECKBOXES_LIST)
-        count = 21
-        while count != 0:
-            checkbox = checkboxes_list[random.randint(1, 15)]
-            if count > 0:
-                self.go_to_element(checkbox)
-                checkbox.click()
-                count -= 1
-            else:
-                break
+        count = 19
+        while count > 0:
+            checkbox = checkboxes_list[random.randint(0, 16)]
+            self.go_to_element(checkbox)
+            checkbox.click()
+            count -= 1
 
     def get_marked_checkboxes(self):
-        marked_checkboxes_list = self.elements_are_present(self.locators.MARKED_CHECKBOXES)
-        data = [title.find_element(By.XPATH, self.locators.CHECKBOX_TITLE).text for title in marked_checkboxes_list]
+        marked_boxes_list = self.elements_are_present(self.locators.CHECK_STATUS_BOXES)
+        data = [title.find_element(By.XPATH, self.locators.CHECKBOX_TITLE).text for title in marked_boxes_list]
         return str(data).replace(' ', '').replace('.doc', '').lower()
 
     def get_output_result(self):
-        result_list = self.elements_are_present(self.locators.OUTPUT_RESULTS)
+        result_list = self.elements_are_present(self.locators.OUTPUT_RESULT)
         data = [item.text for item in result_list if len(item.text) > 0]
         return str(data).replace(' ', '').lower()
 
@@ -87,7 +84,7 @@ class WebTablePage(BasePage):
         count = 1
         # count = randint(1, 3) # for creating a few person for test_data_input
         while count != 0:
-            person_info = next(generated_person())
+            person_info = next(generate_person_data())
             first_name = person_info.first_name
             last_name = person_info.last_name
             email = person_info.email
@@ -119,7 +116,7 @@ class WebTablePage(BasePage):
         return row.text.splitlines()
 
     def update_person_info(self):
-        person_info = next(generated_person())
+        person_info = next(generate_person_data())
         age = person_info.age
         self.element_is_visible(self.locators.UPDATE_BTN).click()
         self.element_is_visible(self.locators.AGE_FIELD_INPUT).clear()
@@ -128,7 +125,7 @@ class WebTablePage(BasePage):
         return str(age)
 
     def delete_person_info(self):
-        person_info = next(generated_person())
+        person_info = next(generate_person_data())
         email = person_info.email
         self.element_is_visible(self.locators.DELETE_PERSON_INFO_BTN).click()
 

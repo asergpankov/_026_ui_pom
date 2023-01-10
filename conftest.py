@@ -5,7 +5,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 import warnings
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def driver():
     warnings.filterwarnings("ignore", category=DeprecationWarning)
     # driver = Chrome(executable_path="./chromedriver")

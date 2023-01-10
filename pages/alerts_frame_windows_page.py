@@ -1,4 +1,4 @@
-from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators
+from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators, AlertsPageLocators
 from pages.base_page import BasePage
 
 
@@ -16,3 +16,6 @@ class BrowserWindowsPage(BasePage):
         self.driver.switch_to.window(self.driver.window_handles[1])
         title_on_new_window = self.element_is_present(self.locators.TEXT_ON_NEW_PAGE).text
         return title_on_new_window
+
+class AlertsPage(BasePage):
+    locators = AlertsPageLocators()

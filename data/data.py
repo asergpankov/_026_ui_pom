@@ -3,14 +3,14 @@ from dataclasses import dataclass
 
 @dataclass
 class Person:
-    full_name: str = None
-    first_name: str = None
-    last_name: str = None
-    age: int = None
-    salary: int = None
-    department: str = None
-    email: str = None
-    current_address: str = None
-    permanent_address: str = None
-    mobile: str = None
-    date_of_birth: str = None
+    full_name: str
+    first_name: str
+    last_name: str
+    age: int
+    salary: int
+    department: str
+    email: str
+    current_address: str
+    permanent_address: str
+    mobile: str
+    date_of_birth: str

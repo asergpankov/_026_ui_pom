@@ -8,18 +8,18 @@ class TextBoxPageLocators:
     PERMANENT_ADDRESS = (By.CSS_SELECTOR, "textarea#permanentAddress")
     SUBMIT = (By.CSS_SELECTOR, "button#submit")
 
-    CREATED_FULL_NAME = (By.CSS_SELECTOR, "p#name")
-    CREATED_EMAIL = (By.CSS_SELECTOR, "p#email")
-    CREATED_CURRENT_ADDRESS = (By.CSS_SELECTOR, "p#currentAddress")
-    CREATED_PERMANENT_ADDRESS = (By.CSS_SELECTOR, "p#permanentAddress")
+    OUTPUT_FULL_NAME = (By.CSS_SELECTOR, "p#name")
+    OUTPUT_EMAIL = (By.CSS_SELECTOR, "p#email")
+    OUTPUT_CURRENT_ADDRESS = (By.CSS_SELECTOR, "p#currentAddress")
+    OUTPUT_PERMANENT_ADDRESS = (By.CSS_SELECTOR, "p#permanentAddress")
 
 
 class CheckBoxPageLocators:
     EXPAND_ALL_BUTTON = (By.CSS_SELECTOR, "button[aria-label='Expand all']")
     CHECKBOXES_LIST = (By.CSS_SELECTOR, "span.rct-title")
-    MARKED_CHECKBOXES = (By.CSS_SELECTOR, "svg.rct-icon-check")
+    CHECK_STATUS_BOXES = (By.CSS_SELECTOR, "svg.rct-icon-check")
     CHECKBOX_TITLE = ".//ancestor::span[@class='rct-text']"  # ancestor -- "Выбирает всех предков текущего узла"
-    OUTPUT_RESULTS = (By.CSS_SELECTOR, "span.text-success")
+    OUTPUT_RESULT = (By.CSS_SELECTOR, "span.text-success")
     LABEL = "label span.rct-title"
 
 

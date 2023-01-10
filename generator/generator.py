@@ -10,7 +10,7 @@ faker_ru = Faker("ru_RU")
 Faker.seed()
 
 
-def generated_person():
+def generate_person_data():
     yield Person(
         full_name=faker_ru.name(),
         first_name=faker_ru.first_name(),
