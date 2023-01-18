@@ -24,13 +24,14 @@ class CheckBoxPageLocators:
 
 
 class RadioButtonPageLocators:
-    YES_RADIOBUTTON = (By.CSS_SELECTOR, "label[class=custom-control-label][for=yesRadio]")
+    YES_RADIOBUTTON = (By.CSS_SELECTOR, "label[class='custom-control-label'][for='yesRadio']")
     IMPRESSIVE_RADIOBUTTON = (By.CSS_SELECTOR, "label[class=custom-control-label][for=impressiveRadio]")
     NO_RADIOBUTTON = (By.CSS_SELECTOR, "label[class=custom-control-label][for=noRadio]")
     OUTPUT_RESULT = (By.CSS_SELECTOR, "span.text-success")
 
 
 class WebTablePageLocators:
+    # add new person
     ADD_BUTTON = (By.CSS_SELECTOR, "button#addNewRecordButton")
     FIRSTNAME_INPUT = (By.CSS_SELECTOR, "input#firstName")
     LASTNAME_INPUT = (By.CSS_SELECTOR, "input#lastName")
@@ -40,20 +41,24 @@ class WebTablePageLocators:
     DEPARTMENT_INPUT = (By.CSS_SELECTOR, "input#department")
     SUBMIT_BUTTON = (By.CSS_SELECTOR, "button#submit")
 
+    # whole table with persons
     PERSON_LINE_IN_LIST = (By.CSS_SELECTOR, "div.rt-tr-group")
-    SEARCH_INPUT = (By.CSS_SELECTOR, "input#searchBox")
+    SEARCH_BOX_INPUT = (By.CSS_SELECTOR, "input#searchBox")
     DELETE_BTN = (By.CSS_SELECTOR, "span[title=Delete]")
-    ROW_PARENT = (By.CSS_SELECTOR, "div.rt-tbody")
+    # ROW_PARENT = (By.CSS_SELECTOR, "div.rt-tbody")
     ROW_LINES_ALL = (By.CSS_SELECTOR, "div.rt-tr-group")
-    ROW_LINE_IN = (By.CSS_SELECTOR, "div[class$=-odd] ")
+    ROW_LINE_IN = (By.CSS_SELECTOR, "div[class$=-odd]")
 
+    # update person info
     UPDATE_BTN = (By.CSS_SELECTOR, "span[title=Edit]")
     AGE_FIELD_INPUT = (By.CSS_SELECTOR, "input#age")
+    EMAIL_FIELD_INPUT = (By.CSS_SELECTOR, "input#userEmail")
     SUBMIT_BTN_UPDATE = (By.CSS_SELECTOR, "button[type=submit]")
 
+    # del person info
     DELETE_PERSON_INFO_BTN = (By.CSS_SELECTOR, "span[title=Delete]")
     NO_ROWS_DATA = (By.CSS_SELECTOR, "div.rt-noData")
-    COUNT_ROW_LIST = (By.CSS_SELECTOR, 'select[aria-label="rows per page"]')
+    ROW_PER_PAGE_BTN = (By.CSS_SELECTOR, 'select[aria-label="rows per page"]')
 
 
 class ButtonsPageLocators:

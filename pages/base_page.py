@@ -14,6 +14,7 @@ class BasePage:
     def element_is_visible(self, locator, timeout=5):
         return wait(self.driver, timeout).until(ec.visibility_of_element_located(locator),
                                                 message=f"[WARN]-- Can't find element by locator {locator}")
+
     def element_is_not_visible(self, locator, timeout=5):
         return wait(self.driver, timeout).until(ec.invisibility_of_element_located(locator))
 

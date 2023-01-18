@@ -3,6 +3,7 @@ import random
 import time
 
 import requests
+from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from generator.generator import generate_person_data
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
@@ -53,25 +54,32 @@ class CheckBoxPage(BasePage):
 
     def get_marked_checkboxes(self):
         marked_boxes_list = self.elements_are_present(self.locators.CHECK_STATUS_BOXES)
-        data = [title.find_element(By.XPATH, self.locators.CHECKBOX_TITLE).text for title in marked_boxes_list]
-        return str(data).replace(' ', '').replace('.doc', '').lower()
+        res = []
+        for box in marked_boxes_list:
+            box_title = box.find_element(By.XPATH, self.locators.CHECKBOX_TITLE)
+            res.append(box_title.text)
+        # res = [title.find_element(By.XPATH, self.locators.CHECKBOX_TITLE).text for title in marked_boxes_list]
+        return str(res).replace('.doc', '').replace(' ', '').lower()
 
     def get_output_result(self):
         result_list = self.elements_are_present(self.locators.OUTPUT_RESULT)
-        data = [item.text for item in result_list if len(item.text) > 0]
-        return str(data).replace(' ', '').lower()
+        res = []
+        for item in result_list:
+            res.append(item.text)
+        # res = [item.text for item in result_list if len(item.text) > 0]
+        return str(res).replace(' ', '').replace('F', 'f')
 
 
 class RadioButtonPage(BasePage):
     locators = RadioButtonPageLocators()
 
-    def click_on_radio_button(self, choice):
+    def click_radio_button(self, choice):
         choices = {
-            'Yes': self.locators.YES_RADIOBUTTON,
-            'Impressive': self.locators.IMPRESSIVE_RADIOBUTTON,
-            'No': self.locators.NO_RADIOBUTTON
+            'yes': self.locators.YES_RADIOBUTTON,
+            'impressive': self.locators.IMPRESSIVE_RADIOBUTTON,
+            'no': self.locators.NO_RADIOBUTTON
         }
-        self.element_is_visible(self, choices[choice]).click()
+        self.element_is_visible(choices[choice]).click()
 
     def get_output_result(self):
         return self.element_is_present(self.locators.OUTPUT_RESULT).text
@@ -81,9 +89,8 @@ class WebTablePage(BasePage):
     locators = WebTablePageLocators()
 
     def add_new_person(self):
-        count = 1
-        # count = randint(1, 3) # for creating a few person for test_data_input
-        while count != 0:
+        count = 1  # create a few persons
+        while count > 0:
             person_info = next(generate_person_data())
             first_name = person_info.first_name
             last_name = person_info.last_name
@@ -107,15 +114,10 @@ class WebTablePage(BasePage):
         data = [item.text.splitlines() for item in persons_lines]
         return data
 
-    def search_added_person(self, key_word):
-        self.element_is_visible(self.locators.SEARCH_INPUT).send_keys(key_word)
+    def search_box_input(self, key_word):
+        self.element_is_visible(self.locators.SEARCH_BOX_INPUT).send_keys(key_word)
 
-    def check_search_person(self):
-        table_lines = self.element_is_present(self.locators.ROW_LINES_ALL)
-        row = table_lines.find_element(self.locators.ROW_LINE_IN)
-        return row.text.splitlines()
-
-    def update_person_info(self):
+    def update_person_info_age(self):
         person_info = next(generate_person_data())
         age = person_info.age
         self.element_is_visible(self.locators.UPDATE_BTN).click()
@@ -124,28 +126,35 @@ class WebTablePage(BasePage):
         self.element_is_visible(self.locators.SUBMIT_BTN_UPDATE).click()
         return str(age)
 
-    def delete_person_info(self):
+    def update_person_info_email(self):
         person_info = next(generate_person_data())
         email = person_info.email
+        self.element_is_visible(self.locators.UPDATE_BTN).click()
+        self.element_is_visible(self.locators.EMAIL_FIELD_INPUT).clear()
+        self.element_is_visible(self.locators.EMAIL_FIELD_INPUT).send_keys(email)
+        self.element_is_visible(self.locators.SUBMIT_BTN_UPDATE).click()
+        return email
+
+    def delete_person_info_btn(self):
         self.element_is_visible(self.locators.DELETE_PERSON_INFO_BTN).click()
 
-    def check_deleted_person(self):
+    def check_deleted_person_message(self):
         return self.element_is_present(self.locators.NO_ROWS_DATA).text
 
-    def iterate_rows(self):
+    def iterate_on_rows(self):
         count = [5, 10, 20, 25, 50, 100]
         data = []
         for num in count:
-            count_row_button = self.element_is_present(self.locators.COUNT_ROW_LIST)
-            self.go_to_element(count_row_button)
-            count_row_button.click()
-            self.element_is_visible(By.CSS_SELECTOR, f"option[value='{num}']").click()
+            position = self.element_is_present(self.locators.ROW_PER_PAGE_BTN)
+            self.go_to_element(position)
+            position.click()
+            self.element_is_visible((By.CSS_SELECTOR, f'option[value="{num}"]')).click()
             data.append(self.check_count_rows())
         return data
 
     def check_count_rows(self):
-        rows_list = self.elements_are_present(self.locators.PERSON_LINE_IN_LIST)
-        return len(rows_list)
+        count_rows_list = self.elements_are_present(self.locators.PERSON_LINE_IN_LIST)
+        return len(count_rows_list)
 
 
 class ButtonsPage(BasePage):

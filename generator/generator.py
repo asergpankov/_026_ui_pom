@@ -15,7 +15,7 @@ def generate_person_data():
         full_name=faker_ru.name(),
         first_name=faker_ru.first_name(),
         last_name=faker_ru.last_name(),
-        age=randint(16, 42),
+        age=randint(16, 66),
         salary=randint(1500, 5100),
         department=faker_ru.job(),
         email=faker_ru.email(),
