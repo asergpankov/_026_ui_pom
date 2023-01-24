@@ -1,4 +1,5 @@
 import os
+import time
 from random import randint
 from time import sleep
 import pytest
@@ -58,7 +59,7 @@ class TestElements:
             key_word = webtable_page.add_new_person()[randint(0, 5)]
             webtable_page.search_box_input(key_word)
             table_line_data = webtable_page.check_added_person()
-            assert key_word in table_line_data[0], "[WARN] -- 'key_word' NOT in person data"
+            assert key_word in table_line_data[0], "[WARN] -- 'key_word' NOT in the person data"
 
         def test_web_table_update_person_info_age(self, driver):
             web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
@@ -99,7 +100,7 @@ class TestElements:
         def test_different_click_on_the_buttons(self, driver):
             buttons_page = ButtonsPage(driver, "https://demoqa.com/buttons")
             buttons_page.open_browser()
-            double = buttons_page.click_on_different_buttons("double")
+            double = buttons_page.click_on_different_buttons("double_left")
             right = buttons_page.click_on_different_buttons("right")
             click = buttons_page.click_on_different_buttons("click")
             assert double == "You have done a double click", "DoubleClick button was not press correctly"
@@ -110,22 +111,22 @@ class TestElements:
         def test_check_home_link(self, driver):
             links_page = LinksPage(driver, "https://demoqa.com/links")
             links_page.open_browser()
-            link_href, current_url = links_page.check_new_tab_home_link()
-            assert link_href == current_url, "[WARN] -- broken link or incorrect url"
+            href_link, current_url = links_page.check_new_tab_home_link()
+            assert href_link == current_url, "[WARN] -- broken link or incorrect url"
 
         def test_check_broken_link(self, driver):
             links_page = LinksPage(driver, "https://demoqa.com/links")
             links_page.open_browser()
-            response_code = links_page.check_broken_link("https://demoqa.com/bad-request")
-            assert response_code == 400
+            status_code = links_page.check_bad_request("https://demoqa.com/bad-request")
+            assert status_code == 400, "[WARN] -- broken link suddenly works"
 
     class TestUploadAndDownload:
         def test_upload_file(self, driver, tmp_file):
             file_name, path = tmp_file
             upload_page = UploadAndDownload(driver, "https://demoqa.com/upload-download")
             upload_page.open_browser()
-            get_name = upload_page.upload_file(path)
-            assert get_name == file_name
+            get_file_name = upload_page.upload_file(path)
+            assert get_file_name == file_name
             os.remove(path)
             assert os.path.exists(path) is False
 
@@ -137,28 +138,22 @@ class TestElements:
             assert os.path.isfile() is True
             os.remove()
 
+    class TestDynamicProperties:
 
-class TestDynamicProperties:
+        def test_btn_will_be_enable_after_5_seconds(self, driver):
+            dynamic_properties = DynamicProperties(driver, "https://demoqa.com/dynamic-properties")
+            dynamic_properties.open_browser()
+            btn_is_enable = dynamic_properties.check_btn_is_enable()
+            assert btn_is_enable is True, "btn is not enable after 5 sec."
 
-    # @pytest.mark.skip(reason='BUG is here. After 4 sec expect non-clickable on btn; act.res- btn clickable before 5 sec')
-    def test_will_enable_5_seconds(self, driver):
-        will_enable_5_seconds = DynamicProperties(driver, "https://demoqa.com/dynamic-properties")
-        will_enable_5_seconds.open_browser()
-        enable_btn = will_enable_5_seconds.check_enable_btn_after_5_sec()
-        assert enable_btn is True
+        def test_btn_color_has_changed(self, driver):
+            dynamic_properties = DynamicProperties(driver, "https://demoqa.com/dynamic-properties")
+            dynamic_properties.open_browser()
+            clr_before, clr_after = dynamic_properties.check_color_changed()
+            assert clr_before != clr_after, "btn color was not changed"
 
-    # @pytest.mark.skip(reason='BUG is here. After 4 sec expect same colors; act.res- clr are different')
-    def test_color_change_btn(self, driver):
-        color_change_btn = DynamicProperties(driver, "https://demoqa.com/dynamic-properties")
-        color_change_btn.open_browser()
-        color_before, color_after = color_change_btn.check_color_change()
-        assert color_before != color_after
-
-    # @pytest.mark.skip(reason='BUG is here. After 4 sec expect non visibility of btn; act.res- btn appears before 5 sec')
-    def test_visible_after_5_seconds(self, driver):
-        visible_after_5_seconds = DynamicProperties(driver, "https://demoqa.com/dynamic-properties")
-        visible_after_5_seconds.open_browser()
-        appear_btn = visible_after_5_seconds.check_appear_btn()
-        assert appear_btn is True
-
-
+        def test_btn_is_visible_after_5_seconds(self, driver):
+            dynamic_properties = DynamicProperties(driver, "https://demoqa.com/dynamic-properties")
+            dynamic_properties.open_browser()
+            btn_is_visible = dynamic_properties.check_btn_visibility()
+            assert btn_is_visible is True, "btn is not visible after 5 sec."

@@ -74,12 +74,12 @@ class RadioButtonPage(BasePage):
     locators = RadioButtonPageLocators()
 
     def click_radio_button(self, choice):
-        choices = {
+        options = {
             'yes': self.locators.YES_RADIOBUTTON,
             'impressive': self.locators.IMPRESSIVE_RADIOBUTTON,
             'no': self.locators.NO_RADIOBUTTON
         }
-        self.element_is_visible(choices[choice]).click()
+        self.element_is_visible(options[choice]).click()
 
     def get_output_result(self):
         return self.element_is_present(self.locators.OUTPUT_RESULT).text
@@ -160,14 +160,14 @@ class WebTablePage(BasePage):
 class ButtonsPage(BasePage):
     locators = ButtonsPageLocators()
 
-    def click_on_different_buttons(self, type_click):
-        if type_click == "double":
+    def click_on_different_buttons(self, click_type):
+        if click_type == "double_left":
             self.double_click_action(self.element_is_visible(self.locators.DOUBLE_CLICK_BTN))
             return self.check_click_on_different_buttons(self.locators.SUCCESS_DOUBLE)
-        if type_click == "right":
+        if click_type == "right":
             self.right_click_action(self.element_is_visible(self.locators.RIGHT_CLICK_BTN))
             return self.check_click_on_different_buttons(self.locators.SUCCESS_RIGHT)
-        if type_click == "click":
+        if click_type == "click":
             self.element_is_visible(self.locators.ORDINARY_CLICK_BTN).click()
             return self.check_click_on_different_buttons(self.locators.SUCCESS_CLICK_ME)
 
@@ -180,22 +180,22 @@ class LinksPage(BasePage):
 
     def check_new_tab_home_link(self):
         home_link = self.element_is_visible(self.locators.HOME_LINK)
-        link_href = home_link.get_attribute('href')
-        request = requests.get(link_href)
+        href = home_link.get_attribute('href')
+        request = requests.get(href)
         if request.status_code == 200:
             home_link.click()
             self.driver.switch_to.window(self.driver.window_handles[1])
             url = self.driver.current_url
-            return link_href, url
+            return href, url
         else:
-            return link_href, request.status_code
+            return href, request.status_code
 
-    def check_broken_link(self, url):
-        request = requests.get(url)
-        if request.status_code == 200:
-            self.element_is_present(self.locators.BAD_REQUEST_LINK).click()
-        else:
-            return request.status_code
+    def check_bad_request(self, bad_request):
+        bad_req_link = self.element_is_present(self.locators.BAD_REQUEST_LINK)
+        bad_req_link.click()
+        href = bad_req_link.get_attribute('href')
+        r = requests.get(bad_request)
+        return r.status_code if href == "javascript:void(0)" and r.status_code == 400 else r.status_code
 
 
 class UploadAndDownload(BasePage):
@@ -203,11 +203,12 @@ class UploadAndDownload(BasePage):
 
     def upload_file(self, path):
         self.element_is_visible(self.locators.UPLOAD_FILE).send_keys(path)
-        get_path_with_name = self.element_is_visible(self.locators.UPLOADED_RESULT).text
-        return get_path_with_name.split('\\')[-1]  # get name only
+        get_result_path = self.element_is_visible(self.locators.UPLOADED_RESULT).text
+        return get_result_path.split('\\')[-1]  # get name only
 
     def download_file(self):
         link = self.element_is_visible(self.locators.DOWNLOAD_FILE).get_attribute('href').split(',')
+        print(link)
         link_decoded = base64.b64decode(link[1])
         try:
             response = requests.get(link_decoded, allow_redirects=True)
@@ -220,26 +221,23 @@ class UploadAndDownload(BasePage):
 class DynamicProperties(BasePage):
     locators = DynamicPropertiesLocators()
 
-    def check_enable_btn_after_5_sec(self):
+    def check_btn_is_enable(self):
         try:
-            self.element_is_clickable(self.locators.WILL_ENABLE_BTN, 4)
-        # 'After 4 sec expect non-clickable on btn; act.res- btn clickable before 5 sec'
-        except TimeoutError as tex:
+            self.element_is_clickable(self.locators.WILL_ENABLE_BTN)
+        except TimeoutError:
             return False
         return True
 
-    def check_color_change(self):
-        color_change_btn = self.element_is_present(self.locators.COLOR_CHANGE_BTN)
-        color_change_btn_before = color_change_btn.value_of_css_property('color')
-        time.sleep(5)  # after 4 sec expect same colors; act.res is different
-        color_change_btn_after = color_change_btn.value_of_css_property('color')
-        # print(color_change_btn_before, color_change_btn_after)
-        return color_change_btn_before, color_change_btn_after
+    def check_color_changed(self):
+        get_clr = self.element_is_visible(self.locators.COLOR_CHANGE_BTN)
+        clr_before = get_clr.value_of_css_property('color')
+        sleep(5)
+        clr_after = get_clr.value_of_css_property('color')
+        return clr_before, clr_after
 
-    def check_appear_btn(self):
+    def check_btn_visibility(self):
         try:
             self.element_is_visible(self.locators.VISIBLE_AFTER_5_SEC_BTN)
-        # 'After 4 sec expect non visibility of btn; act.res- btn appears before 5 sec'
-        except TimeoutError as tex:
+        except TimeoutError:
             return False
         return True

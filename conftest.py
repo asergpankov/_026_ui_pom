@@ -20,5 +20,5 @@ def driver():
 @pytest.fixture()
 def tmp_file(tmp_path):
     fp = tmp_path / 'test_filename.txt'
-    fp.write_text('test_content_inside')
-    return fp.name, str(fp)  # class 'pathlib.posixpath' to string
+    fp.write_text('text_content_inside_file')
+    return fp.name, str(fp)
