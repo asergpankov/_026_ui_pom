@@ -14,3 +14,4 @@ class Person:
     permanent_address: str
     mobile: str
     date_of_birth: str
+    mac_address: str

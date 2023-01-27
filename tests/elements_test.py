@@ -157,3 +157,6 @@ class TestElements:
             dynamic_properties.open_browser()
             btn_is_visible = dynamic_properties.check_btn_visibility()
             assert btn_is_visible is True, "btn is not visible after 5 sec."
+
+
+# it was last test on Elements page

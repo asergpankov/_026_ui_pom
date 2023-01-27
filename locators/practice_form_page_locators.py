@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from random import randint
 
+
 class StudentRegistrationFormLocators:
     FIRST_NAME = (By.CSS_SELECTOR, 'input[placeholder="First Name"]')
     LAST_NAME = (By.CSS_SELECTOR, 'input[placeholder="Last Name"]')
@@ -9,7 +10,7 @@ class StudentRegistrationFormLocators:
     MOBILE_NMB = (By.CSS_SELECTOR, 'input[placeholder="Mobile Number"]')
     DATE_OF_BIRTH = (By.CSS_SELECTOR, 'div[class*="input-container"] input[id="dateOfBirthInput"]')
     SUBJECT = (By.CSS_SELECTOR, 'input[id="subjectsInput"]')
-    HOBBIES = (By.CSS_SELECTOR, f'label[for="hobbies-checkbox-{randint(1, 3)}"]')
+    # HOBBIES = (By.CSS_SELECTOR, f'label[for="hobbies-checkbox-{randint(1, 3)}"]')
     UPLOAD_FILE = (By.CSS_SELECTOR, 'input[id="uploadPicture"]')
 
     CURRENT_ADDRESS = (By.CSS_SELECTOR, 'textarea[placeholder="Current Address"]')
