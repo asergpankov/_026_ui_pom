@@ -8,4 +8,9 @@ class BrowserWindowsPageLocators:
 
 
 class AlertsPageLocators:
-    pass
+    ALRT_SEE_BTN = (By.CSS_SELECTOR, 'button[id="alertButton"]')
+    ALRT_AFTER_5SEC_BTN = (By.CSS_SELECTOR, 'button[id="timerAlertButton"]')
+    ALRT_CONFIRM_BTN = (By.CSS_SELECTOR, 'button[id="confirmButton"]')
+    ALRT_CONFIRM_RESULT = (By.CSS_SELECTOR, 'span[id="confirmResult"]')
+    ALRT_PROMT_BTN = (By.CSS_SELECTOR, 'button[id="promtButton"]')
+    ALRT_PROMT_RESULT = (By.CSS_SELECTOR, 'span[id="promptResult"]')

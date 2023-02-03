@@ -24,7 +24,7 @@ def generate_person_data():
         # unique_int=fake.unique.random_int(min=1, max=5),
         # ipv4_private=fake.ipv4_private(), # '166.186.169.69'
         # ipv4_public=fake.ipv4_public(),
-        # subject=faker_ru.
+        sentence=fake.sentence(nb_words=10)
     )
 
 

@@ -1,4 +1,5 @@
 from pages.alerts_frame_windows_page import BrowserWindowsPage, AlertsPage
+import pytest
 
 
 class TestAlertsFrameWindows:
@@ -17,6 +18,28 @@ class TestAlertsFrameWindows:
             assert new_window_text == 'This is a sample page'
 
     class TestAlerts:
-        def test_alerts(self, driver):
+        def test_alert_regular(self, driver):
             alerts_page = AlertsPage(driver, "https://demoqa.com/alerts")
             alerts_page.open_browser()
+            alert_text = alerts_page.check_alert_regular()
+            assert alert_text == 'You clicked a button', "[WARN] -- regular alert does not work as expected"
+
+        @pytest.mark.flaky(reruns=2)
+        def test_alert_appears_after_5sec(self, driver):
+            alerts_page = AlertsPage(driver, "https://demoqa.com/alerts")
+            alerts_page.open_browser()
+            alert_text, alert_time = alerts_page.check_alert_appears_after_5sec()
+            assert alert_text == 'This alert appeared after 5 seconds', "[WARN] -- 5 sec. alert does not work as expected"
+            assert alert_time >= 5, f"alert appear time is {alert_time}"
+
+        def test_alert_confirm(self, driver):
+            alerts_page = AlertsPage(driver, "https://demoqa.com/alerts")
+            alerts_page.open_browser()
+            result_text = alerts_page.check_alert_confirm()
+            assert result_text == 'You selected Ok' or result_text == 'You selected Cancel', f"[WARN] -- res is: {result_text}"
+
+        def test_alert_promt(self, driver):
+            alerts_page = AlertsPage(driver, "https://demoqa.com/alerts")
+            alerts_page.open_browser()
+            sentence, result_text = alerts_page.check_alert_promt()
+            assert result_text == f"You entered {sentence}", f"[WARN] -- sentence does not correspond with {result_text}"

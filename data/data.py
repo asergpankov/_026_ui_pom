@@ -16,3 +16,4 @@ class Person:
     date_of_birth: str
     mac_address: str
     product_number: str
+    sentence: str
