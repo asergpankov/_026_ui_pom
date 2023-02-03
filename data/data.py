@@ -15,3 +15,4 @@ class Person:
     mobile: str
     date_of_birth: str
     mac_address: str
+    product_number: str

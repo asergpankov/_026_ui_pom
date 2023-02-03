@@ -103,9 +103,9 @@ class TestElements:
             double = buttons_page.click_on_different_buttons("double_left")
             right = buttons_page.click_on_different_buttons("right")
             click = buttons_page.click_on_different_buttons("click")
-            assert double == "You have done a double click", "DoubleClick button was not press correctly"
-            assert right == "You have done a right click", "RightClick button was not press correctly"
-            assert click == "You have done a dynamic click", "ClickMe  button was not press correctly"
+            assert double == "You have done a double click", "[WARN] -- DoubleClick button was not press correctly"
+            assert right == "You have done a right click", "[WARN] -- RightClick button was not press correctly"
+            assert click == "You have done a dynamic click", "[WARN] -- ClickMe  button was not press correctly"
 
     class TestLinks:
         def test_check_home_link(self, driver):
@@ -144,19 +144,19 @@ class TestElements:
             dynamic_properties = DynamicProperties(driver, "https://demoqa.com/dynamic-properties")
             dynamic_properties.open_browser()
             btn_is_enable = dynamic_properties.check_btn_is_enable()
-            assert btn_is_enable is True, "btn is not enable after 5 sec."
+            assert btn_is_enable is True, "[WARN] -- btn is not enable after 5 sec."
 
         def test_btn_color_has_changed(self, driver):
             dynamic_properties = DynamicProperties(driver, "https://demoqa.com/dynamic-properties")
             dynamic_properties.open_browser()
             clr_before, clr_after = dynamic_properties.check_color_changed()
-            assert clr_before != clr_after, "btn color was not changed"
+            assert clr_before != clr_after, "[WARN] -- btn color was not changed"
 
         def test_btn_is_visible_after_5_seconds(self, driver):
             dynamic_properties = DynamicProperties(driver, "https://demoqa.com/dynamic-properties")
             dynamic_properties.open_browser()
             btn_is_visible = dynamic_properties.check_btn_visibility()
-            assert btn_is_visible is True, "btn is not visible after 5 sec."
+            assert btn_is_visible is True, "[WARN] -- btn is not visible after 5 sec."
 
 
 # it was last test on Elements page
