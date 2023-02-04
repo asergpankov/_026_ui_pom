@@ -1,5 +1,5 @@
 from generator.generator import generate_person_data
-from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators, AlertsPageLocators
+from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators
 from pages.base_page import BasePage
 from time import sleep, monotonic
 from random import choice
@@ -60,3 +60,16 @@ class AlertsPage(BasePage):
         alert_text.accept()
         result_text = self.element_is_present(self.locators.ALRT_PROMT_RESULT).text
         return sentence, result_text
+
+
+class FramesPage(BasePage):
+    locators = FramesPageLocators()
+
+    def check_frame_conditions(self):
+        frame = self.element_is_visible(self.locators.FIRST_FRAME)
+        width = frame.get_attribute('width')
+        height = frame.get_attribute('height')
+        self.driver.switch_to.frame(frame)
+        text = self.element_is_visible(self.locators.SAMPLE_TEXT).text
+        self.driver.switch_to.default_content()
+        return [text, width, height]

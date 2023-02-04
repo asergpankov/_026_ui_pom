@@ -1,4 +1,4 @@
-from pages.alerts_frame_windows_page import BrowserWindowsPage, AlertsPage
+from pages.alerts_frame_windows_page import BrowserWindowsPage, AlertsPage, FramesPage
 import pytest
 
 
@@ -43,3 +43,10 @@ class TestAlertsFrameWindows:
             alerts_page.open_browser()
             sentence, result_text = alerts_page.check_alert_promt()
             assert result_text == f"You entered {sentence}", f"[WARN] -- sentence does not correspond with {result_text}"
+
+    class TestFrames:
+        def test_frame_conditions(self, driver):
+            frame_cond = FramesPage(driver, "https://demoqa.com/frames")
+            frame_cond.open_browser()
+            result_frame = frame_cond.check_frame_conditions()
+            assert result_frame == ['This is a sample page', '500px', '350px'], "[WARN] -- frame condition were broken"
