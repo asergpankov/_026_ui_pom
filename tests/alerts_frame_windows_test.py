@@ -1,4 +1,4 @@
-from pages.alerts_frame_windows_page import BrowserWindowsPage, AlertsPage, FramesPage
+from pages.alerts_frame_windows_page import BrowserWindowsPage, AlertsPage, FramesPage, NestedFramesPage
 import pytest
 
 
@@ -50,3 +50,11 @@ class TestAlertsFrameWindows:
             frame_cond.open_browser()
             result_frame = frame_cond.check_frame_conditions()
             assert result_frame == ['This is a sample page', '500px', '350px'], "[WARN] -- frame condition were broken"
+
+    class TestNestedFrames:
+        def test_nested_frame_text(self, driver):
+            nested_frame = NestedFramesPage(driver, "https://demoqa.com/nestedframes")
+            nested_frame.open_browser()
+            parent_text, child_text = nested_frame.get_nested_frame_text()
+            assert parent_text == 'Parent frame', "[WARN] -- smth wrong with getting parent frame text"
+            assert child_text == 'Child Iframe', "[WARN] -- smth wrong with getting child iframe text"
