@@ -1,4 +1,5 @@
-from pages.alerts_frame_windows_page import BrowserWindowsPage, AlertsPage, FramesPage, NestedFramesPage
+from pages.alerts_frame_windows_page import BrowserWindowsPage, AlertsPage, FramesPage, NestedFramesPage, \
+    ModalDialogsPage
 import pytest
 
 
@@ -56,5 +57,33 @@ class TestAlertsFrameWindows:
             nested_frame = NestedFramesPage(driver, "https://demoqa.com/nestedframes")
             nested_frame.open_browser()
             parent_text, child_text = nested_frame.get_nested_frame_text()
-            assert parent_text == 'Parent frame', "[WARN] -- smth wrong with getting parent frame text"
-            assert child_text == 'Child Iframe', "[WARN] -- smth wrong with getting child iframe text"
+            assert parent_text == 'Parent frame', "[WARN] -- smth went wrong with getting a parent frame text"
+            assert child_text == 'Child Iframe', "[WARN] -- smth went wrong with getting a child iframe text"
+
+    class TestModalDialogs:
+        def test_small_and_large_btns_names(self, driver):
+            small_modal = ModalDialogsPage(driver, "https://demoqa.com/modal-dialogs")
+            small_modal.open_browser()
+            sm_btn_name, lg_btn_name = small_modal.check_small_and_large_btns_names()
+            assert sm_btn_name == 'Small modal'
+            assert lg_btn_name == 'Large modal'
+
+        def test_small_modal_btn(self, driver):
+            small_modal = ModalDialogsPage(driver, "https://demoqa.com/modal-dialogs")
+            small_modal.open_browser()
+            sm_title, sm_text_len = small_modal.check_small_modal_btn()
+            assert sm_title == 'Small Modal', "[WARN] -- sm_modal_title was changed"
+            assert 0 < sm_text_len < 50, "[WARN] -- length of sm_modal_text was changed"
+
+        def test_large_modal_btn(self, driver):
+            large_modal = ModalDialogsPage(driver, "https://demoqa.com/modal-dialogs")
+            large_modal.open_browser()
+            lg_title, lg_text_len = large_modal.check_large_modal_btn()
+            assert lg_title == 'Large Modal', "[WARN] -- lg_modal_title was changed"
+            assert 0 < lg_text_len < 600, "[WARN] -- length of lg_modal_text was changed"
+
+        def test_small_and_large_modals_close_with_x_sign(self, driver):
+            mb = ModalDialogsPage(driver, "https://demoqa.com/modal-dialogs")
+            mb.open_browser()
+            result = mb.check_small_and_large_modals_close_with_x_sign()
+            assert result == ['Close', 'Close'], "[WARN] -- x sign does not close as needed"
