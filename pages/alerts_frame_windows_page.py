@@ -1,4 +1,4 @@
-from generator.generator import generate_person_data
+from generator.generator import person_data_generator
 from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators, \
     NestedFramesPageLocators, ModalDialogsPageLocators
 from pages.base_page import BasePage
@@ -53,7 +53,7 @@ class AlertsPage(BasePage):
             return result_text
 
     def check_alert_promt(self):
-        person_info = next(generate_person_data())
+        person_info = next(person_data_generator())
         sentence = person_info.sentence
         self.element_is_visible(self.locators.ALRT_PROMT_BTN).click()
         alert = self.driver.switch_to.alert

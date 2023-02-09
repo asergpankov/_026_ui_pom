@@ -5,7 +5,7 @@ import time
 import requests
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from generator.generator import generate_person_data
+from generator.generator import person_data_generator
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
     WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, UploadAndDownloadLocators, DynamicPropertiesLocators
 from pages.base_page import BasePage
@@ -16,7 +16,7 @@ class TextBoxPage(BasePage):
     locators = TextBoxPageLocators()
 
     def fill_all_text_boxes(self):
-        person_info = next(generate_person_data())
+        person_info = next(person_data_generator())
         full_name = person_info.full_name
         email = person_info.email
         current_address = person_info.current_address
@@ -91,7 +91,7 @@ class WebTablePage(BasePage):
     def add_new_person(self):
         count = 1  # create a few persons
         while count > 0:
-            person_info = next(generate_person_data())
+            person_info = next(person_data_generator())
             first_name = person_info.first_name
             last_name = person_info.last_name
             email = person_info.email
@@ -118,7 +118,7 @@ class WebTablePage(BasePage):
         self.element_is_visible(self.locators.SEARCH_BOX_INPUT).send_keys(key_word)
 
     def update_person_info_age(self):
-        person_info = next(generate_person_data())
+        person_info = next(person_data_generator())
         age = person_info.age
         self.element_is_visible(self.locators.UPDATE_BTN).click()
         self.element_is_visible(self.locators.AGE_FIELD_INPUT).clear()
@@ -127,7 +127,7 @@ class WebTablePage(BasePage):
         return str(age)
 
     def update_person_info_email(self):
-        person_info = next(generate_person_data())
+        person_info = next(person_data_generator())
         email = person_info.email
         self.element_is_visible(self.locators.UPDATE_BTN).click()
         self.element_is_visible(self.locators.EMAIL_FIELD_INPUT).clear()

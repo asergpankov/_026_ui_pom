@@ -1,12 +1,12 @@
 from random import randint
-from data.data import Person
+from data.data import Person, Color
 from faker import Faker
 
 fake = Faker("ru_RU")
 Faker.seed(4)
 
 
-def generate_person_data():
+def person_data_generator():
     yield Person(
         full_name=fake.name(),
         first_name=fake.first_name(),
@@ -19,8 +19,9 @@ def generate_person_data():
         permanent_address=fake.address(),
         mobile=fake.msisdn(),
         date_of_birth=fake.date(),
-        mac_address=fake.hexify(text='MAC Address: ^^:^^:^^:^^:^^:^^', upper=True), # 'MAC Address: CD:18:FC:9F:B6:49'
-        product_number=fake.bothify(text='Product Number: ????-########', letters='ABCDE'), # 'Product Number: DCEB-66048764'
+        mac_address=fake.hexify(text='MAC Address: ^^:^^:^^:^^:^^:^^', upper=True),  # 'MAC Address: CD:18:FC:9F:B6:49'
+        product_number=fake.bothify(text='Product Number: ????-########', letters='ABCDE'),
+        # 'Product Number: DCEB-66048764'
         # unique_int=fake.unique.random_int(min=1, max=5),
         # ipv4_private=fake.ipv4_private(), # '166.186.169.69'
         # ipv4_public=fake.ipv4_public(),
@@ -28,3 +29,7 @@ def generate_person_data():
     )
 
 
+def color_generator():
+    yield Color(
+        colors_list=["red", "Blue", "Green", "yellow", "Purple", "black", "White", "voilet", "Indigo", "Magenta", "aqua"]
+    )

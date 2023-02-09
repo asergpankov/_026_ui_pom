@@ -17,3 +17,7 @@ class Person:
     mac_address: str
     product_number: str
     sentence: str
+
+@dataclass()
+class Color:
+    colors_list: list

@@ -6,7 +6,7 @@ import time
 import requests
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
-from generator.generator import generate_person_data
+from generator.generator import person_data_generator
 from locators.practice_form_page_locators import StudentRegistrationFormLocators
 from pages.base_page import BasePage
 from time import sleep
@@ -16,7 +16,7 @@ class StudentRegistrationForm(BasePage):
     locators = StudentRegistrationFormLocators()
 
     def fill_all_fields(self, f_name, f_path, state):
-        person_data = next(generate_person_data())
+        person_data = next(person_data_generator())
         first_name = person_data.first_name
         last_name = person_data.last_name
         email = person_data.email
