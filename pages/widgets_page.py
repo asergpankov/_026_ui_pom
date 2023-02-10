@@ -1,3 +1,4 @@
+from selenium.common import TimeoutException
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from time import sleep
@@ -46,7 +47,7 @@ class AutoCompletePage(BasePage):
         colors_in = [color.capitalize() for color in colors]
         return colors_in
 
-    def check_colors_in_multi_box(self):
+    def check_colors_multiply_input(self):
         colors_in_box = self.elements_are_visible(self.locators.MULTI_OUTPUT)
         colors_res = []
         for color in colors_in_box:
@@ -73,9 +74,23 @@ class AutoCompletePage(BasePage):
         clrs_after_remove = len(self.elements_are_visible(self.locators.MULTI_OUTPUT))
         return clrs_before_remove, clrs_after_remove
 
-    def remove_colors_from_multi_with_main_x(self):
+    def remove_all_colors_from_multi_with_main_x(self):
         clrs_before_remove = len(self.elements_are_visible(self.locators.MULTI_OUTPUT))
-        print(clrs_before_remove)
         self.element_is_clickable(self.locators.COLOR_REMOVE_MAIN_X_BTN).click()
-        clrs_after_remove = len(self.elements_are_visible(self.locators.MULTI_OUTPUT))
-        print(clrs_after_remove)
+        try:
+            clrs_after_remove = self.element_is_visible(self.locators.MULTI_OUTPUT, 2)
+        except TimeoutException:
+            clrs_after_remove = 0
+        return clrs_before_remove, clrs_after_remove
+
+    def fill_color_single_input(self):
+        color = choice(next(color_generator()).colors_list)
+        single_input = self.element_is_visible(self.locators.SINGLE_INPUT)
+        single_input.send_keys(color)
+        single_input.send_keys(Keys.ENTER)
+        return color.capitalize()
+
+    def check_color_single_input(self):
+        color_in_box = self.element_is_visible(self.locators.SINGLE_OUTPUT).text
+        return color_in_box
+

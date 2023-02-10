@@ -20,10 +20,10 @@ class TestWidgetsPage:
             auto_complete = AutoCompletePage(driver, "https://demoqa.com/auto-complete")
             auto_complete.open_browser()
             colors_from_gen = auto_complete.fill_colors_multiply_input()
-            colors_res = auto_complete.check_colors_in_multi_box()
+            colors_res = auto_complete.check_colors_multiply_input()
             assert colors_from_gen == colors_res, 'diffs in list of colors'
 
-        def test_remove_colors_from_multi_with_x_sign(self, driver):
+        def test_remove_all_colors_from_multi_with_x_sign(self, driver):
             auto_complete = AutoCompletePage(driver, "https://demoqa.com/auto-complete")
             auto_complete.open_browser()
             auto_complete.fill_colors_multiply_input()
@@ -34,11 +34,22 @@ class TestWidgetsPage:
             auto_complete = AutoCompletePage(driver, "https://demoqa.com/auto-complete")
             auto_complete.open_browser()
             auto_complete.fill_colors_multiply_input()
-            auto_complete.remove_color_from_multiply_with_backspace()
+            clrs_before_remove, clrs_after_remove = auto_complete.remove_color_from_multiply_with_backspace()
+            assert clrs_before_remove > 0
+            assert clrs_after_remove == 1
 
-        @pytest.mark.skip
         def test_remove_colors_from_multi_with_main_x(self, driver):
             auto_complete = AutoCompletePage(driver, "https://demoqa.com/auto-complete")
             auto_complete.open_browser()
             auto_complete.fill_colors_multiply_input()
-            auto_complete.remove_colors_from_multi_with_main_x()
+            clrs_before_remove, clrs_after_remove = auto_complete.remove_all_colors_from_multi_with_main_x()
+            assert clrs_before_remove > 0
+            assert clrs_after_remove == 0
+
+        def test_auto_complete_single(self, driver):
+            auto_complete = AutoCompletePage(driver, "https://demoqa.com/auto-complete")
+            auto_complete.open_browser()
+            color_from_gen = auto_complete.fill_color_single_input()
+            colors_res = auto_complete.check_color_single_input()
+            assert color_from_gen == colors_res, 'colors are not equal'
+            # bugs: - color could not be deleted, - "voilet" is not correct color
