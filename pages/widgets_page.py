@@ -1,11 +1,12 @@
 from selenium.common import TimeoutException
 from selenium.webdriver import Keys
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from time import sleep
 from random import choice, sample, randint
-from generator.generator import color_generator
+from generator.generator import color_generator, date_and_time_generator
 
-from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators
+from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators, DatePickerPageLocators
 from pages.base_page import BasePage
 
 
@@ -94,3 +95,44 @@ class AutoCompletePage(BasePage):
         color_in_box = self.element_is_visible(self.locators.SINGLE_OUTPUT).text
         return color_in_box
 
+
+class DatePickerPage(BasePage):
+    locators = DatePickerPageLocators()
+
+    def set_date_on_calendar(self):
+        date_gen = next(date_and_time_generator())
+        date_in_box = self.element_is_visible(self.locators.SELECT_DATE_INPUT)
+        date_in_box.click()
+        get_date_before = date_in_box.get_attribute('value')
+        self.select_option_by_text(self.locators.MONTH_SELECT, date_gen.month)
+        self.select_option_by_text(self.locators.YEAR_SELECT, date_gen.year)
+        self.set_number_on_calendar(self.locators.DAY_SELECT, '10')  # TODO // check wrong day setup with date lt 10
+        sleep(3)
+        get_date_after = date_in_box.get_attribute('value')
+        sleep(3)
+        # print(get_date_before, get_date_after)
+
+        return get_date_before, get_date_after
+
+    def set_date_and_time_on_calendar(self):
+        date_gen = next(date_and_time_generator())
+        date_in_box = self.element_is_visible(self.locators.DATE_AND_TIME_INPUT)
+        get_date_before = date_in_box.get_attribute('value')
+        date_in_box.click()
+        self.element_is_visible(self.locators.DT_YEAR_BTN).click()
+        self.set_number_on_calendar(self.locators.DT_YEAR_LIST, '2019')  # TODO / need to setup a random year
+        self.element_is_visible(self.locators.DT_MONTH_BTN).click()
+        self.set_number_on_calendar(self.locators.DT_MONTH_LIST, date_gen.month)
+        self.set_number_on_calendar(self.locators.DT_DAY, date_gen.day)
+        self.set_number_on_calendar(self.locators.DT_TIME_LIST, date_gen.time)
+        get_date_after = date_in_box.get_attribute('value')
+        print(date_gen)
+        print(get_date_before, get_date_after)
+        return get_date_before, get_date_after
+
+    def set_number_on_calendar(self, elements, value):
+        calendar = self.elements_are_present(elements)
+        for num in calendar:
+            if num.text == value:
+                num.click()
+                break

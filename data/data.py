@@ -18,6 +18,15 @@ class Person:
     product_number: str
     sentence: str
 
+
 @dataclass()
 class Color:
     colors_list: list
+
+
+@dataclass()
+class Date_and_Time:
+    year: str
+    month: str
+    day: str
+    time: str

@@ -1,5 +1,6 @@
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait as wait
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as ec
 
 
@@ -48,3 +49,8 @@ class BasePage:
     def remove_footer(self):
         self.driver.execute_script('document.getElementsByTagName("footer")[0].remove();')
         self.driver.execute_script('document.getElementById("close-fixedban").remove();')
+
+    def select_option_by_text(self, element, value):
+        select = Select(self.element_is_present(element))
+        select.select_by_visible_text(value)
+

@@ -1,6 +1,6 @@
 import pytest
 
-from pages.widgets_page import AccordianPage, AutoCompletePage
+from pages.widgets_page import AccordianPage, AutoCompletePage, DatePickerPage
 
 
 class TestWidgetsPage:
@@ -53,3 +53,17 @@ class TestWidgetsPage:
             colors_res = auto_complete.check_color_single_input()
             assert color_from_gen == colors_res, 'colors are not equal'
             # bugs: - color could not be deleted, - "voilet" is not correct color
+
+    class TestDatePickerPage:
+        def test_change_select_date(self, driver):
+            date_picker = DatePickerPage(driver, "https://demoqa.com/date-picker")
+            date_picker.open_browser()
+            date_before, date_after = date_picker.set_date_on_calendar()
+            assert date_before != date_after
+            # assert date_gen == date_after
+
+        def test_change_date_and_time(self, driver):
+            date_picker = DatePickerPage(driver, "https://demoqa.com/date-picker")
+            date_picker.open_browser()
+            date_before, date_after = date_picker.set_date_and_time_on_calendar()
+            assert date_before != date_after

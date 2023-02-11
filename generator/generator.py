@@ -1,9 +1,11 @@
-from random import randint
-from data.data import Person, Color
+from itertools import product
+from random import randint, choice
+from data.data import Person, Color, Date_and_Time
 from faker import Faker
 
 fake = Faker("ru_RU")
-Faker.seed(4)
+fake_eng = Faker("en_US")
+Faker.seed(2)
 
 
 def person_data_generator():
@@ -31,5 +33,18 @@ def person_data_generator():
 
 def color_generator():
     yield Color(
-        colors_list=["red", "Blue", "Green", "yellow", "Purple", "black", "White", "voilet", "Indigo", "Magenta", "aqua"]
+        colors_list=["red", "Blue", "Green", "yellow", "Purple", "black", "White", "voilet", "Indigo", "Magenta",
+                     "aqua"]
+    )
+
+
+time_15min_step = [f"{h:02d}:{m:02d}" for h, m in product(range(24), range(0, 60, 15))]
+
+
+def date_and_time_generator():
+    yield Date_and_Time(
+        year=fake_eng.year(),
+        month=fake_eng.month_name(),
+        day=fake_eng.day_of_month(),
+        time=choice(time_15min_step)
     )
