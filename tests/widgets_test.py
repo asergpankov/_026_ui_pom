@@ -1,5 +1,5 @@
 import pytest
-
+from datetime import date
 from pages.widgets_page import AccordianPage, AutoCompletePage, DatePickerPage
 
 
@@ -60,10 +60,11 @@ class TestWidgetsPage:
             date_picker.open_browser()
             date_before, date_after = date_picker.set_date_on_calendar()
             assert date_before != date_after
-            # assert date_gen == date_after
+            # current_year, current_month, current_day = date.today().year, date.today().month, date.today().day
+            # assert f"{current_month}/{current_day}/{current_year}" == date_before #TODO day value have to consist from two symbols '02'
 
         def test_change_date_and_time(self, driver):
             date_picker = DatePickerPage(driver, "https://demoqa.com/date-picker")
             date_picker.open_browser()
             date_before, date_after = date_picker.set_date_and_time_on_calendar()
-            assert date_before != date_after
+            assert date_before != date_after, 'date in box not valid or inputed incorrect'

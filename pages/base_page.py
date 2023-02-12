@@ -2,6 +2,7 @@ from selenium.webdriver import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait as wait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as ec
+from random import choice
 
 
 class BasePage:
@@ -54,3 +55,7 @@ class BasePage:
         select = Select(self.element_is_present(element))
         select.select_by_visible_text(value)
 
+    def set_randon_year_month_day_from_list(self, elements):
+        calendar = self.elements_are_present(elements)
+        item = choice(calendar)
+        item.click()

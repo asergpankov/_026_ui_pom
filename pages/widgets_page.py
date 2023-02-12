@@ -104,14 +104,12 @@ class DatePickerPage(BasePage):
         date_in_box = self.element_is_visible(self.locators.SELECT_DATE_INPUT)
         date_in_box.click()
         get_date_before = date_in_box.get_attribute('value')
-        self.select_option_by_text(self.locators.MONTH_SELECT, date_gen.month)
+        self.select_option_by_text(self.locators.MONTH_SELECT, date_gen.month) # select
         self.select_option_by_text(self.locators.YEAR_SELECT, date_gen.year)
-        self.set_number_on_calendar(self.locators.DAY_SELECT, '10')  # TODO // check wrong day setup with date lt 10
-        sleep(3)
+        self.set_randon_year_month_day_from_list(self.locators.DAY_SELECT)
         get_date_after = date_in_box.get_attribute('value')
-        sleep(3)
-        # print(get_date_before, get_date_after)
-
+        print(date_gen.month, date_gen.year)
+        print(get_date_before, get_date_after)
         return get_date_before, get_date_after
 
     def set_date_and_time_on_calendar(self):
@@ -120,10 +118,10 @@ class DatePickerPage(BasePage):
         get_date_before = date_in_box.get_attribute('value')
         date_in_box.click()
         self.element_is_visible(self.locators.DT_YEAR_BTN).click()
-        self.set_number_on_calendar(self.locators.DT_YEAR_LIST, '2019')  # TODO / need to setup a random year
+        self.set_randon_year_month_day_from_list(self.locators.DT_YEAR_LIST)
         self.element_is_visible(self.locators.DT_MONTH_BTN).click()
-        self.set_number_on_calendar(self.locators.DT_MONTH_LIST, date_gen.month)
-        self.set_number_on_calendar(self.locators.DT_DAY, date_gen.day)
+        self.set_randon_year_month_day_from_list(self.locators.DT_MONTH_LIST)
+        self.set_randon_year_month_day_from_list(self.locators.DT_DAY_LIST)
         self.set_number_on_calendar(self.locators.DT_TIME_LIST, date_gen.time)
         get_date_after = date_in_box.get_attribute('value')
         print(date_gen)
@@ -136,3 +134,5 @@ class DatePickerPage(BasePage):
             if num.text == value:
                 num.click()
                 break
+
+
