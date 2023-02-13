@@ -1,6 +1,6 @@
 import pytest
 from datetime import date
-from pages.widgets_page import AccordianPage, AutoCompletePage, DatePickerPage
+from pages.widgets_page import AccordianPage, AutoCompletePage, DatePickerPage, SliderPage, ProgressBarPage
 
 
 class TestWidgetsPage:
@@ -68,3 +68,24 @@ class TestWidgetsPage:
             date_picker.open_browser()
             date_before, date_after = date_picker.set_date_and_time_on_calendar()
             assert date_before != date_after, 'date in box not valid or inputed incorrect'
+
+    class TestSliderPage:
+        def test_change_slider_position(self, driver):
+            slider_page = SliderPage(driver, "https://demoqa.com/slider")
+            slider_page.open_browser()
+            value_before, value_after = slider_page.change_slider_position()
+            assert value_before < value_after
+
+    class TestProgressBarPage:
+        def test_partial_change_progressbar_position(self, driver):
+            progress_bar_page = ProgressBarPage(driver, "https://demoqa.com/progress-bar")
+            progress_bar_page.open_browser()
+            value_before, value_after = progress_bar_page.partial_change_progressbar_position()
+            assert value_before < value_after
+
+        def test_complete_change_progressbar_position(self, driver):
+            progress_bar_page = ProgressBarPage(driver, "https://demoqa.com/progress-bar")
+            progress_bar_page.open_browser()
+            start_btn_name, stop_btn_name, reset_btn_name, value_before, value_after, value_after_reset = progress_bar_page.complete_change_progressbar_position()
+            assert (value_before, value_after, value_after_reset) == ('0', '100', '0')
+            assert (start_btn_name, stop_btn_name, reset_btn_name) == ('Start', 'Stop', 'Reset')

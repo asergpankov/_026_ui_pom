@@ -34,6 +34,12 @@ class BasePage:
         return wait(self.driver, timeout).until(ec.element_to_be_clickable(locator),
                                                 message=f"[WARN]-- Can't find element by locator {locator}")
 
+    def element_attribute_to_include(self, locator, attribute, timeout=13):
+        return wait(self.driver, timeout).until(ec.element_attribute_to_include(locator, attribute_=attribute))
+
+    def staleness_of(self, locator, timeout=10):
+        return wait(self.driver, timeout).until(ec.staleness_of(locator))
+
     def go_to_element(self, element):
         self.driver.execute_script("arguments[0].scrollIntoView();", element)
 
@@ -59,3 +65,8 @@ class BasePage:
         calendar = self.elements_are_present(elements)
         item = choice(calendar)
         item.click()
+
+    def drag_and_drop_by_offset(self, element, x_offset, y_offset):
+        action = ActionChains(self.driver)
+        action.drag_and_drop_by_offset(element, x_offset, y_offset)
+        action.perform()

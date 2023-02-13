@@ -6,7 +6,8 @@ from time import sleep
 from random import choice, sample, randint
 from generator.generator import color_generator, date_and_time_generator
 
-from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators, DatePickerPageLocators
+from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators, DatePickerPageLocators, \
+    SliderPageLocators, ProgressBarPageLocators
 from pages.base_page import BasePage
 
 
@@ -104,12 +105,10 @@ class DatePickerPage(BasePage):
         date_in_box = self.element_is_visible(self.locators.SELECT_DATE_INPUT)
         date_in_box.click()
         get_date_before = date_in_box.get_attribute('value')
-        self.select_option_by_text(self.locators.MONTH_SELECT, date_gen.month) # select
+        self.select_option_by_text(self.locators.MONTH_SELECT, date_gen.month)  # select
         self.select_option_by_text(self.locators.YEAR_SELECT, date_gen.year)
         self.set_randon_year_month_day_from_list(self.locators.DAY_SELECT)
         get_date_after = date_in_box.get_attribute('value')
-        print(date_gen.month, date_gen.year)
-        print(get_date_before, get_date_after)
         return get_date_before, get_date_after
 
     def set_date_and_time_on_calendar(self):
@@ -124,8 +123,6 @@ class DatePickerPage(BasePage):
         self.set_randon_year_month_day_from_list(self.locators.DT_DAY_LIST)
         self.set_number_on_calendar(self.locators.DT_TIME_LIST, date_gen.time)
         get_date_after = date_in_box.get_attribute('value')
-        print(date_gen)
-        print(get_date_before, get_date_after)
         return get_date_before, get_date_after
 
     def set_number_on_calendar(self, elements, value):
@@ -136,3 +133,39 @@ class DatePickerPage(BasePage):
                 break
 
 
+class SliderPage(BasePage):
+    locators = SliderPageLocators()
+
+    def change_slider_position(self):
+        value_before = self.element_is_visible(self.locators.SLIDER_VALUE).get_attribute('value')
+        slider_line = self.element_is_visible(self.locators.SLIDER_LINE)
+        self.drag_and_drop_by_offset(slider_line, randint(10, 200), 0)
+        value_after = self.element_is_visible(self.locators.SLIDER_VALUE).get_attribute('value')
+        return int(value_before), int(value_after)
+
+
+class ProgressBarPage(BasePage):
+    locators = ProgressBarPageLocators()
+
+    def partial_change_progressbar_position(self):
+        value_before = self.element_is_present(self.locators.PR_BAR_VALUE).get_attribute('aria-valuenow')
+        start_stop_btn = self.element_is_clickable(self.locators.START_STOP_BTN)
+        start_stop_btn.click()
+        sleep(randint(2, 7))
+        start_stop_btn.click()
+        value_after = self.element_is_present(self.locators.PR_BAR_VALUE).get_attribute('aria-valuenow')
+        return int(value_before), int(value_after)
+
+    def complete_change_progressbar_position(self):
+        value_before = self.element_is_present(self.locators.PR_BAR_VALUE).get_attribute('aria-valuenow')
+        start_stop_btn = self.element_is_clickable(self.locators.START_STOP_BTN)
+        start_btn_name = start_stop_btn.text
+        start_stop_btn.click()
+        stop_btn_name = start_stop_btn.text
+        self.element_is_present(self.locators.PR_BAR_SUCCESS_VALUE, 15)
+        value_after = self.element_is_visible(self.locators.PR_BAR_SUCCESS_VALUE).get_attribute('aria-valuenow')
+        reset_btn = self.element_is_clickable(self.locators.RESET_BTN)
+        reset_btn_name = reset_btn.text
+        reset_btn.click()
+        value_after_reset = self.element_is_present(self.locators.PR_BAR_VALUE).get_attribute('aria-valuenow')
+        return start_btn_name, stop_btn_name, reset_btn_name, value_before, value_after, value_after_reset

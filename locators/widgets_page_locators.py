@@ -30,9 +30,20 @@ class DatePickerPageLocators:
 
     DATE_AND_TIME_INPUT = (By.CSS_SELECTOR, 'input[id="dateAndTimePickerInput"]')
     DT_MONTH_BTN = (By.CSS_SELECTOR, 'div[class="react-datepicker__month-read-view"]')
-    # DT_MONTH_LIST = (By.CSS_SELECTOR, 'div[class="react-datepicker__month-dropdown"] div')
     DT_MONTH_LIST = (By.CSS_SELECTOR, 'div[class*="react-datepicker__month-option"]')
     DT_YEAR_BTN = (By.CSS_SELECTOR, 'span[class="react-datepicker__year-read-view--selected-year"]')
     DT_YEAR_LIST = (By.CSS_SELECTOR, 'div[class*="eact-datepicker__year-option"]:not(:first-child):not(:last-child)')
     DT_DAY_LIST = (By.CSS_SELECTOR, 'div[class*="react-datepicker__day react-datepicker__day"]')
     DT_TIME_LIST = (By.CSS_SELECTOR, 'ul[class="react-datepicker__time-list"] li')
+
+
+class SliderPageLocators:
+    SLIDER_VALUE = (By.CSS_SELECTOR, 'input[id="sliderValue"]')
+    SLIDER_LINE = (By.CSS_SELECTOR, 'input[class="range-slider range-slider--primary"]')
+
+
+class ProgressBarPageLocators:
+    START_STOP_BTN = (By.CSS_SELECTOR, 'button[id="startStopButton"]')
+    RESET_BTN = (By.CSS_SELECTOR, 'button[id="resetButton"]')
+    PR_BAR_VALUE = (By.CSS_SELECTOR, 'div[class="progress-bar bg-info"]')
+    PR_BAR_SUCCESS_VALUE = (By.CSS_SELECTOR, 'div[class="progress-bar bg-success"]')
