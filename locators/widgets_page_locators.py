@@ -47,3 +47,41 @@ class ProgressBarPageLocators:
     RESET_BTN = (By.CSS_SELECTOR, 'button[id="resetButton"]')
     PR_BAR_VALUE = (By.CSS_SELECTOR, 'div[class="progress-bar bg-info"]')
     PR_BAR_SUCCESS_VALUE = (By.CSS_SELECTOR, 'div[class="progress-bar bg-success"]')
+
+
+class TabsPageLocators:
+    TABS_LIST = (By.CSS_SELECTOR, 'nav a')
+    TABS_CONTENT = (By.CSS_SELECTOR, 'div[id="demo-tabpane-what"] p')
+
+
+class ToolTipsPageLocators:
+    GREEN_BTN = (By.CSS_SELECTOR, 'button[id="toolTipButton"]')
+    HOVER_TIP_BTN = (By.CSS_SELECTOR, 'button[aria-describedby="buttonToolTip"]')
+    CONTRARY_LINK = (By.XPATH, '//*[text()="Contrary"]')
+    CONTRARY_HOVER_TIP = (By.CSS_SELECTOR, 'a[aria-describedby="contraryTexToolTip"]')
+    SECTION_LINK = (By.XPATH, '//*[text()="1.10.32"]')
+    SECTION_HOVER_TIP = (By.CSS_SELECTOR, 'a[aria-describedby="sectionToolTip"]')
+
+    FIELD_INPUT = (By.CSS_SELECTOR, 'input[id="toolTipTextField"]')
+    FIELD_HOVER_TIP = (By.CSS_SELECTOR, 'input[aria-describedby="textFieldToolTip"]')
+
+    HOVER_TIP_INNER_TEXT = (By.CSS_SELECTOR, 'div[class="tooltip-inner"]')
+
+
+class MenuPageLocators:
+    MENU_ITEMS = (By.CSS_SELECTOR, 'ul li a')
+
+
+class SelectMenuPageLocators:
+    SELECT_OPTION_INPUT = (By.XPATH, '//div[@id="withOptGroup"]//input')
+    SELECT_OPTION_OUTPUT = (By.XPATH, '//div[@id="withOptGroup"]//div[@class=" css-1uccc91-singleValue"]')
+    SELECT_TITLE_INPUT = (By.XPATH, '//div[@id="selectOne"]//input')
+    SELECT_TITLE_OUTPUT = (By.XPATH, '//div[@id="selectOne"]//div[@class=" css-1uccc91-singleValue"]')
+
+    COLOR_SELECT = (By.XPATH, '//select[@id="oldSelectMenu"]')
+    COLOR_OPTIONS = (By.XPATH, '//select[@id="oldSelectMenu"]/option')
+    COLOR_OPTION_BLACK = (By.XPATH, '//option[text()="Black"]')
+    MULTISELECT_INPUT = (By.XPATH, '//div[text()="Select..."]/ancestor::div[1]//input')
+    MULTISELECT_INPUT_SNEAKY = (By.XPATH, '//div[text()="Blue"]/ancestor::div[3]//input')
+    MULTISELECT_OUTPUT_CLR = (By.XPATH, '//div[@class="css-1rhbuit-multiValue"]/div[1]')
+    OUTPUT_CLRS = (By.XPATH, '//div[@class="css-12jo7m5"]')

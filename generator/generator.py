@@ -1,11 +1,13 @@
 from itertools import product
 from random import randint, choice
-from data.data import Person, Color, Date_and_Time
+from data.data import Person, Color, Date_and_Time, Group_Option
 from faker import Faker
 
 fake = Faker("ru_RU")
 fake_eng = Faker("en_US")
-Faker.seed(2)
+
+
+# Faker.seed(0)
 
 
 def person_data_generator():
@@ -22,7 +24,8 @@ def person_data_generator():
         mobile=fake.msisdn(),
         date_of_birth=fake.date(),
         mac_address=fake.hexify(text='MAC Address: ^^:^^:^^:^^:^^:^^', upper=True),  # 'MAC Address: CD:18:FC:9F:B6:49'
-        product_number=fake.bothify(text='Product Number: ????-########', letters='ABCDE'),    # 'Product Number: DCEB-66048764'
+        product_number=fake.bothify(text='Product Number: ????-########', letters='ABCDE'),
+        # 'Product Number: DCEB-66048764'
         # unique_int=fake.unique.random_int(min=1, max=5),
         # ipv4_private=fake.ipv4_private(), # '166.186.169.69'
         # ipv4_public=fake.ipv4_public(),
@@ -46,4 +49,11 @@ def date_and_time_generator():
         month=fake_eng.month_name(),
         day=fake_eng.day_of_month(),
         time=choice(time_15min_step)
+    )
+
+
+def group_option_generator():
+    yield Group_Option(
+        options_list=["Group 1, option 1", "Group 1, option 2", "Group 2, option 1", "Group 2, option 2",
+                      "A root option", "Another root option"]
     )

@@ -1,6 +1,7 @@
 import pytest
 from datetime import date
-from pages.widgets_page import AccordianPage, AutoCompletePage, DatePickerPage, SliderPage, ProgressBarPage
+from pages.widgets_page import AccordianPage, AutoCompletePage, DatePickerPage, SliderPage, ProgressBarPage, TabsPage, \
+    ToolTipsPage, MenuPage, SelectMenuPage
 
 
 class TestWidgetsPage:
@@ -89,3 +90,45 @@ class TestWidgetsPage:
             start_btn_name, stop_btn_name, reset_btn_name, value_before, value_after, value_after_reset = progress_bar_page.complete_change_progressbar_position()
             assert (value_before, value_after, value_after_reset) == ('0', '100', '0')
             assert (start_btn_name, stop_btn_name, reset_btn_name) == ('Start', 'Stop', 'Reset')
+
+    class TestTabsPage:
+        def test_tabs_work_fine(self, driver):
+            tabs_page = TabsPage(driver, "https://demoqa.com/tabs")
+            tabs_page.open_browser()
+            tabs_list, tabs_content = tabs_page.tabs_work_fine()
+            assert tabs_list == ['What', 'Origin', 'Use']
+            assert tabs_content == [574, 1059, 613]
+            # BUG: More tab does not work at all
+
+    @pytest.mark.flaky(reruns=2)
+    class TestToolTipsPage:
+        def test_tabs_work_fine(self, driver):
+            tool_tips = ToolTipsPage(driver, "https://demoqa.com/tool-tips")
+            tool_tips.open_browser()
+            button_hover_tip, field_hover_tip, contrary_hover_tip, section_hover_tip = tool_tips.check_text_from_hover_tips()
+            assert button_hover_tip == 'You hovered over the Button'
+            assert field_hover_tip == 'You hovered over the text field'
+            assert contrary_hover_tip == 'You hovered over the Contrary'
+            assert section_hover_tip == 'You hovered over the 1.10.32'
+
+    @pytest.mark.flaky(reruns=2)
+    class TestMenuPage:
+        def test_tabs_work_fine(self, driver):
+            menu_page = MenuPage(driver, "https://demoqa.com/menu")
+            menu_page.open_browser()
+            result_list = menu_page.go_through_menu_items()
+            assert result_list == ['Main Item 1', 'Main Item 2', 'Sub Item', 'Sub Item', 'SUB SUB LIST »',
+                                   'Sub Sub Item 1', 'Sub Sub Item 2', 'Main Item 3']
+
+    class TestSelectMenuPage:
+        def test_select_menu_works_fine(self, driver):
+            select_menu_page = SelectMenuPage(driver, "https://demoqa.com/select-menu")
+            select_menu_page.open_browser()
+            input_res, output_res = select_menu_page.fill_option_select_input_and_check()
+            assert input_res == output_res, '[WARN] -- diffs btw input and output options'
+            title, title_output = select_menu_page.fill_title_select_input()
+            assert title == title_output, '[WARN] -- diffs btw input and output title'
+            select_menu_page.choose_random_color_from_select()
+            colors_in = select_menu_page.fill_colors_multi_select_input()
+            result_clrs_list = select_menu_page.check_colors_multi_select_input()
+            assert colors_in == result_clrs_list, '[WARN] -- diffs btw input and output colors'

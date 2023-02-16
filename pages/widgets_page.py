@@ -4,10 +4,11 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from time import sleep
 from random import choice, sample, randint
-from generator.generator import color_generator, date_and_time_generator
+from generator.generator import color_generator, date_and_time_generator, group_option_generator
 
 from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators, DatePickerPageLocators, \
-    SliderPageLocators, ProgressBarPageLocators
+    SliderPageLocators, ProgressBarPageLocators, TabsPageLocators, ToolTipsPageLocators, MenuPageLocators, \
+    SelectMenuPageLocators
 from pages.base_page import BasePage
 
 
@@ -169,3 +170,121 @@ class ProgressBarPage(BasePage):
         reset_btn.click()
         value_after_reset = self.element_is_present(self.locators.PR_BAR_VALUE).get_attribute('aria-valuenow')
         return start_btn_name, stop_btn_name, reset_btn_name, value_before, value_after, value_after_reset
+
+
+class TabsPage(BasePage):
+    locators = TabsPageLocators()
+
+    def tabs_work_fine(self):
+        tabs = self.elements_are_present(self.locators.TABS_LIST)[:3]  # TODO remake it with a dict
+        tabs_list = []
+        tabs_content = []
+        for tab in tabs:
+            tab.click()
+            tab_title = tab.text
+            tabs_list.append(tab_title)
+            if not tab_title == 'Origin':
+                content = self.element_is_present(
+                    (By.CSS_SELECTOR, f'div[id="demo-tabpane-{tab_title.lower()}"] p')).text
+            else:
+                content = self.element_is_present((By.CSS_SELECTOR, f'div[id="demo-tabpane-origin"]')).text
+            tabs_content.append(len(content))
+        return tabs_list, tabs_content
+
+
+class ToolTipsPage(BasePage):
+    locators = ToolTipsPageLocators()
+
+    def get_text_from_hover_tip(self, to_element, wait_for_hover_tip):
+        elem = self.element_is_present(to_element)
+        self.move_to_element(elem)
+        self.element_is_visible(wait_for_hover_tip)
+        sleep(1)
+        hover_tip = self.element_is_visible(self.locators.HOVER_TIP_INNER_TEXT)
+        hover_tip_text = hover_tip.text
+        return hover_tip_text
+
+    def check_text_from_hover_tips(self):
+        button_hover_tip = self.get_text_from_hover_tip(self.locators.GREEN_BTN, self.locators.HOVER_TIP_BTN)
+        field_hover_tip = self.get_text_from_hover_tip(self.locators.FIELD_INPUT, self.locators.FIELD_HOVER_TIP)
+        contrary_hover_tip = self.get_text_from_hover_tip(self.locators.CONTRARY_LINK, self.locators.CONTRARY_HOVER_TIP)
+        section_hover_tip = self.get_text_from_hover_tip(self.locators.SECTION_LINK, self.locators.SECTION_HOVER_TIP)
+        return button_hover_tip, field_hover_tip, contrary_hover_tip, section_hover_tip
+
+
+class MenuPage(BasePage):
+    locators = MenuPageLocators()
+
+    def go_through_menu_items(self):
+        items = self.elements_are_present(self.locators.MENU_ITEMS)
+        result_list = []
+        for item in items:
+            self.move_to_element(item)
+            result_list.append(item.text)
+        return result_list
+
+
+class SelectMenuPage(BasePage):
+    locators = SelectMenuPageLocators()
+
+    def fill_option_select_input_and_check(self):
+        count = 11
+        input_res = []
+        output_res = []
+        while count > 0:
+            options_gen = ["Group 1, option 1", "Group 1, option 2", "Group 2, option 1", "Group 2, option 2",
+                           "A root option", "Another root option"]  # TODO need to parse data from bundle.js
+            option = choice(options_gen)
+            option_input = self.element_is_clickable(self.locators.SELECT_OPTION_INPUT)
+            option_input.send_keys(option)
+            option_input.send_keys(Keys.ENTER)
+            input_res.append(option)
+            option_input.click()
+            option_output_text = self.element_is_visible(self.locators.SELECT_OPTION_OUTPUT).text
+            output_res.append(option_output_text)
+            count -= 1
+        return input_res, output_res
+
+    def fill_title_select_input(self):
+        titles = ["Dr.", "Mr.", "Mrs.", "Ms.", "Prof.", "Other"]
+        title = choice(titles)
+        title_input = self.element_is_clickable(self.locators.SELECT_TITLE_INPUT)
+        title_input.send_keys(title)
+        title_input.send_keys(Keys.ENTER)
+        title_output = self.element_is_visible(self.locators.SELECT_TITLE_OUTPUT).text
+        return title, title_output
+
+    def choose_random_color_from_select(self):
+        options = self.elements_are_present(self.locators.COLOR_OPTIONS)
+        count = len(options) + 3
+        result_list = []
+        while count > 0:
+            colors_gen = next(color_generator()).colors_list
+            color = choice(colors_gen).capitalize()
+            color_box = self.element_is_clickable(self.locators.COLOR_SELECT)
+            color_box.click()
+            self.select_option_by_text(self.locators.COLOR_SELECT, color)
+            result_list.append(color)
+            count -= 1
+            color_box.click()
+
+    def fill_colors_multi_select_input(self):
+        colors_list = ["red", "Green", "black", "Blue"]
+        colors = sample(colors_list, k=randint(2, len(colors_list)))
+        for color in colors:
+            try:
+                color_input = self.element_is_visible(self.locators.MULTISELECT_INPUT,
+                                                      1)  # TODO input locator become broken after input first color
+            except TimeoutException:
+                color_input = self.element_is_visible(self.locators.MULTISELECT_INPUT_SNEAKY, 1)
+            color_input.send_keys(color)
+            color_input.send_keys(Keys.ENTER)
+        colors_in = [color.capitalize() for color in colors]
+        return colors_in
+
+    def check_colors_multi_select_input(self):
+        colors_in = self.elements_are_visible(self.locators.OUTPUT_CLRS)
+        result_clrs_list = []
+        for color in colors_in:
+            result_clrs_list.append(color.text)
+        return result_clrs_list
