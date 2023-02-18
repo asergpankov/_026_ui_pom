@@ -76,6 +76,11 @@ class BasePage:
         action.drag_and_drop(source, target)
         action.perform()
 
+    def get_elements_text(self, elements):
+        elements_on_page = self.elements_are_visible(elements)
+        elements_names = [name.text for name in elements_on_page]
+        return elements_names, len(elements_on_page)
+
     def move_to_element(self, element):
         action = ActionChains(self.driver)
         action.move_to_element(element)

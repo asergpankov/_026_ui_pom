@@ -5,8 +5,8 @@ from selenium.webdriver.common.by import By
 from time import sleep
 from random import choice, sample, randint
 from generator.generator import color_generator, date_and_time_generator, group_option_generator
-from locators.interactions_page_locators import SortablePageLocators
-from typing import Literal
+from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators
+from typing import Literal, List
 from pages.base_page import BasePage
 
 
@@ -35,3 +35,22 @@ class SortablePage(BasePage):
         self.drag_and_drop_to_element(source_item, target_item)
         items_order_after = self.get_sortable_elements(items)
         return items_order_before, items_order_after
+
+
+class SelectablePage(BasePage):
+    locators = SelectablePageLocators()
+
+    def check_elements_on_page(self):
+        self.element_is_visible(self.locators.LIST_TAB).click()
+        elements_names, elements_on_page = self.get_elements_text(self.locators.LIST_ITEMS)
+        return elements_names, elements_on_page
+
+    def check_selectable_item(self):
+        self.element_is_visible(self.locators.LIST_TAB).click()
+        nonactive_items_before = self.elements_are_visible(self.locators.LIST_ITEMS)
+        rand_item = choice(nonactive_items_before)
+        rand_item.click()
+        rand_item_text = rand_item.text
+        active_items_after = self.element_is_visible(self.locators.LIST_ITEMS_ACTIVE)
+        return rand_item_text, active_items_after.text
+
