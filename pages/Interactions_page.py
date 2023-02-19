@@ -45,12 +45,59 @@ class SelectablePage(BasePage):
         elements_names, elements_on_page = self.get_elements_text(self.locators.LIST_ITEMS)
         return elements_names, elements_on_page
 
-    def check_selectable_item(self):
-        self.element_is_visible(self.locators.LIST_TAB).click()
-        nonactive_items_before = self.elements_are_visible(self.locators.LIST_ITEMS)
-        rand_item = choice(nonactive_items_before)
-        rand_item.click()
-        rand_item_text = rand_item.text
-        active_items_after = self.element_is_visible(self.locators.LIST_ITEMS_ACTIVE)
-        return rand_item_text, active_items_after.text
+    def clicking_on_random_items(self, tab_name):
+        if tab_name == 'list':
+            tab = self.locators.LIST_TAB
+            items = self.locators.LIST_ITEMS
+        elif tab_name == 'grid':
+            tab = self.locators.GRID_TAB
+            items = self.locators.GRID_ITEMS
+        else:
+            tab = self.locators.GRID_TAB
+            items = self.locators.GRID_ITEMS
 
+        self.element_is_visible(tab).click()
+        clicked_items = []
+        nonactive_items = self.elements_are_visible(items)
+        rand_items = sample(nonactive_items, k=randint(1, len(nonactive_items)))
+        for item in rand_items:
+            item.click()
+            clicked_items.append(item.text)
+        print(clicked_items)
+        return clicked_items
+
+    def get_active_items(self, tab_name):
+        if tab_name == 'list':
+            items = self.locators.LIST_ITEMS_ACTIVE
+        elif tab_name == 'grid':
+            items = self.locators.GRID_ITEMS_ACTIVE
+        else:
+            items = self.locators.GRID_ITEMS_ACTIVE
+
+        active_items = self.elements_are_visible(items)
+        active_items_list = [item.text for item in active_items]
+        print(active_items_list)
+        return active_items_list
+
+    def choose_and_cancellation_all_items(self, tab_name):
+        if tab_name == 'list':
+            tab = self.locators.LIST_TAB
+            items = self.locators.LIST_ITEMS
+            active_items = self.locators.LIST_ITEMS_ACTIVE
+        elif tab_name == 'grid':
+            tab = self.locators.GRID_TAB
+            items = self.locators.GRID_ITEMS
+            active_items = self.locators.GRID_ITEMS_ACTIVE
+        else:
+            tab = self.locators.GRID_TAB
+            items = self.locators.GRID_ITEMS
+            active_items = self.locators.GRID_ITEMS_ACTIVE
+
+        self.element_is_visible(tab).click()
+        nonactive_items = self.elements_are_visible(items)
+        [item.click()for item in nonactive_items]
+        active_items = self.elements_are_visible(active_items)
+        [item.click()for item in active_items]
+        nonactive_items_after = self.elements_are_visible(items)
+        [item.click()for item in nonactive_items_after]
+        return len(nonactive_items), len(active_items), len(nonactive_items_after)

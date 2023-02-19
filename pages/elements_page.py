@@ -1,5 +1,5 @@
 import base64
-import random
+from random import randint
 import time
 
 import requests
@@ -47,7 +47,7 @@ class CheckBoxPage(BasePage):
         checkboxes_list = self.elements_are_visible(self.locators.CHECKBOXES_LIST)
         count = len(checkboxes_list) + 5
         while count > 0:
-            checkbox = checkboxes_list[random.randint(1, len(checkboxes_list))-1]
+            checkbox = checkboxes_list[randint(1, len(checkboxes_list))]
             self.go_to_element(checkbox)
             checkbox.click()
             count -= 1
