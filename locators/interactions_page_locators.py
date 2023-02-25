@@ -15,3 +15,10 @@ class SelectablePageLocators:
     GRID_TAB = (By.XPATH, '//a[@id="demo-tab-grid"]')
     GRID_ITEMS = (By.XPATH, '//div[@id="demo-tabpane-grid"]//li')
     GRID_ITEMS_ACTIVE = (By.XPATH, '//div[@id="demo-tabpane-grid"]//li[contains(@class, "active")]')
+
+
+class ResizablePageLocators:
+    RESIZABLE_BOX = (By.XPATH, "//div[@id='resizableBoxWithRestriction']")
+    RESIZABLE_BOX_HANDLE = (By.XPATH, "//div[@id='resizableBoxWithRestriction']//span")
+    RESIZABLE = (By.XPATH, "//div[@id='resizable']")
+    RESIZABLE_HANDLE = (By.XPATH, "//div[@class='resizable-nolimit mt-4']//span")

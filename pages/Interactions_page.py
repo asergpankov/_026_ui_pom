@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from time import sleep
 from random import choice, sample, randint
 from generator.generator import color_generator, date_and_time_generator, group_option_generator
-from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators
+from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators
 from typing import Literal, List
 from pages.base_page import BasePage
 
@@ -40,9 +40,19 @@ class SortablePage(BasePage):
 class SelectablePage(BasePage):
     locators = SelectablePageLocators()
 
-    def check_elements_on_page(self):
-        self.element_is_visible(self.locators.LIST_TAB).click()
-        elements_names, elements_on_page = self.get_elements_text(self.locators.LIST_ITEMS)
+    def check_elements_on_page(self, tab_name):
+        tabs = {
+            'list': {
+                'tab': self.locators.LIST_TAB,
+                'items': self.locators.LIST_ITEMS
+            },
+            'grid': {
+                'tab': self.locators.GRID_TAB,
+                'items': self.locators.GRID_ITEMS
+            }
+        }
+        self.element_is_visible(tabs[tab_name]['tab']).click()
+        elements_names, elements_on_page = self.get_elements_text(tabs[tab_name]['items'])
         return elements_names, elements_on_page
 
     def clicking_on_random_items(self, tab_name):
@@ -63,7 +73,6 @@ class SelectablePage(BasePage):
         for item in rand_items:
             item.click()
             clicked_items.append(item.text)
-        print(clicked_items)
         return clicked_items
 
     def get_active_items(self, tab_name):
@@ -76,7 +85,6 @@ class SelectablePage(BasePage):
 
         active_items = self.elements_are_visible(items)
         active_items_list = [item.text for item in active_items]
-        print(active_items_list)
         return active_items_list
 
     def choose_and_cancellation_all_items(self, tab_name):
@@ -95,9 +103,27 @@ class SelectablePage(BasePage):
 
         self.element_is_visible(tab).click()
         nonactive_items = self.elements_are_visible(items)
-        [item.click()for item in nonactive_items]
+        [item.click() for item in nonactive_items]
         active_items = self.elements_are_visible(active_items)
-        [item.click()for item in active_items]
+        [item.click() for item in active_items]
         nonactive_items_after = self.elements_are_visible(items)
-        [item.click()for item in nonactive_items_after]
+        [item.click() for item in nonactive_items_after]
         return len(nonactive_items), len(active_items), len(nonactive_items_after)
+
+
+class ResizablePage(BasePage):
+    locators = ResizablePageLocators()
+
+    def change_resizable_box_size(self, width, height):
+        box_handle = self.element_is_visible(self.locators.RESIZABLE_BOX_HANDLE)
+        self.drag_and_drop_by_offset(box_handle, width, height)
+        element = self.element_is_visible(self.locators.RESIZABLE_BOX)
+        get_position = element.get_attribute('style')
+        return get_position
+
+    def change_resizable_size(self, width, height):
+        box_handle = self.element_is_present(self.locators.RESIZABLE_HANDLE)
+        self.drag_and_drop_by_offset(box_handle, width, height)
+        element = self.element_is_present(self.locators.RESIZABLE)
+        get_position = element.get_attribute('style')
+        return get_position

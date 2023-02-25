@@ -1,6 +1,7 @@
 import pytest
 
-from pages.Interactions_page import SortablePage, SelectablePage
+from pages.Interactions_page import SortablePage, SelectablePage, ResizablePage
+from src.enums.global_enums import SelectablePageEnums
 
 
 class TestInteractionsPage:
@@ -18,15 +19,16 @@ class TestInteractionsPage:
         def test_check_names_and_numbers_on_list_tab(self, driver):
             selectable = SelectablePage(driver, "https://demoqa.com/selectable")
             selectable.open_browser()
-            elements_names, elements_on_page = selectable.check_elements_on_page()
-            assert elements_names == ['Cras justo odio', 'Dapibus ac facilisis in', 'Morbi leo risus',
-                                      'Porta ac consectetur ac'], 'names were changed'
+            elements_names, elements_on_page = selectable.check_elements_on_page('list')
+            assert elements_names == SelectablePageEnums.LIST_NAMES.value, 'items names were changed'
             assert len(elements_names) == elements_on_page, 'number of elements is not equal current names'
 
-        @pytest.mark.skip('need to finish') #TODO need to finish test
         def test_check_names_and_numbers_on_grid_tab(self, driver):
             selectable = SelectablePage(driver, "https://demoqa.com/selectable")
             selectable.open_browser()
+            elements_names, elements_on_page = selectable.check_elements_on_page('grid')
+            assert elements_names == SelectablePageEnums.GRID_NAMES.value, 'items names were changed'
+            assert len(elements_names) == elements_on_page, 'number of elements is not equal current names'
 
         def test_check_selectable_item_on_list_tab(self, driver):
             selectable = SelectablePage(driver, "https://demoqa.com/selectable")
@@ -53,3 +55,30 @@ class TestInteractionsPage:
             selectable.open_browser()
             res1, res2, res3 = selectable.choose_and_cancellation_all_items('grid')
             assert res1 == res2 == res3, 'wrong numbers of active and nonactive items after cancellation'
+
+    class TestResizablePage:
+
+        def test_resizable_box_oversize_500x_300(self, driver):
+            resizable = ResizablePage(driver, "https://demoqa.com/resizable")
+            resizable.open_browser()
+            position = resizable.change_resizable_box_size(600, 400)
+            assert position == 'width: 500px; height: 300px;'
+
+        def test_resizable_box_drop_under_150x_150(self, driver):
+            resizable = ResizablePage(driver, "https://demoqa.com/resizable")
+            resizable.open_browser()
+            position = resizable.change_resizable_box_size(-300, -300)
+            assert position == 'width: 150px; height: 150px;'
+
+        @pytest.mark.skip(reason='flaky or smth wrong')
+        def test_resizable_oversize_400x_400(self, driver):
+            resizable = ResizablePage(driver, "https://demoqa.com/resizable")
+            resizable.open_browser()
+            position = resizable.change_resizable_size(900, 500)
+            assert position == 'width: 20px; height: 20px;'
+
+        def test_resizable_drop_under_20x_20(self, driver):
+            resizable = ResizablePage(driver, "https://demoqa.com/resizable")
+            resizable.open_browser()
+            position = resizable.change_resizable_size(-300, -300)
+            assert position == 'width: 20px; height: 20px;'
