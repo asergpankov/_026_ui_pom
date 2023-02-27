@@ -5,7 +5,8 @@ from selenium.webdriver.common.by import By
 from time import sleep
 from random import choice, sample, randint
 from generator.generator import color_generator, date_and_time_generator, group_option_generator
-from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators
+from locators.interactions_page_locators import SortablePageLocators, SelectablePageLocators, ResizablePageLocators, \
+    DroppablePageLocators
 from typing import Literal, List
 from pages.base_page import BasePage
 
@@ -127,3 +128,64 @@ class ResizablePage(BasePage):
         element = self.element_is_present(self.locators.RESIZABLE)
         get_position = element.get_attribute('style')
         return get_position
+
+
+class DroppablePage(BasePage):
+    locators = DroppablePageLocators()
+
+    def drop_in_or_through_area(self, method, drag_elem, drop_elem):
+        text_before = drop_elem.text
+        color_before = drop_elem.value_of_css_property("background-color")
+        if method == 'through':
+            self.drag_and_drop_by_offset(drag_elem, 500, randint(-30, 30))
+        else:
+            self.drag_and_drop_to_element(drag_elem, drop_elem)
+        text_after = drop_elem.text
+        color_after = drop_elem.value_of_css_property("background-color")
+        return text_before, text_after, color_before, color_after
+
+    # TODO need an unification of drop funks
+    def simple_drop(self, method):
+        self.element_is_visible(self.locators.SIMPLE_TAB).click()
+        drag_elem = self.element_is_visible(self.locators.SIMPLE_DRAGGABLE)
+        drop_elem = self.element_is_visible(self.locators.SIMPLE_DROPPABLE)
+        text_before, text_after, color_before, color_after = self.drop_in_or_through_area(method, drag_elem, drop_elem)
+        self.drag_and_drop_by_offset(drag_elem, randint(-300, 300), randint(-200, 200))
+        return text_before, text_after, color_before, color_after
+
+    def not_accept_drop(self, method):
+        self.element_is_visible(self.locators.ACCEPT_TAB).click()
+        drag_elem = self.element_is_visible(self.locators.NOT_ACCEPTABLE)
+        drop_elem = self.element_is_visible(self.locators.ACCEPT_DROPPABLE)
+        text_before, text_after, color_before, color_after = self.drop_in_or_through_area(method, drag_elem, drop_elem)
+        self.drag_and_drop_by_offset(drag_elem, randint(-300, 300), randint(-200, 200))
+        return text_before, text_after, color_before, color_after
+
+    def accept_drop(self, method):
+        self.element_is_visible(self.locators.ACCEPT_TAB).click()
+        drag_elem = self.element_is_visible(self.locators.ACCEPTABLE)
+        drop_elem = self.element_is_visible(self.locators.ACCEPT_DROPPABLE)
+        text_before, text_after, color_before, color_after = self.drop_in_or_through_area(method, drag_elem, drop_elem)
+        self.drag_and_drop_by_offset(drag_elem, randint(-300, 300), randint(-200, 200))
+        return text_before, text_after, color_before, color_after
+
+    def inner_not_greedy_drop_in_area(self, method):
+        self.element_is_visible(self.locators.PREVENT_TAB).click()
+        drag_elem = self.element_is_visible(self.locators.DRAG_ME)
+        drop_elem = self.element_is_visible(self.locators.INNER_DROP_NOT_GREEDY)
+        text_before, text_after, color_before, color_after = self.drop_in_or_through_area(method, drag_elem, drop_elem)
+        self.drag_and_drop_by_offset(drag_elem, randint(-300, 300), randint(-200, 200))
+        outer_text = self.element_is_visible(self.locators.OUTER_DROP_NOT_GREEDY).text
+        outer_color = self.element_is_visible(self.locators.OUTER_DROP_NOT_GREEDY).value_of_css_property(
+            "background-color")
+        return text_before, text_after, color_before, color_after, outer_text, outer_color
+
+    def outer_not_greedy_drop_in_area(self, method):
+        self.element_is_visible(self.locators.PREVENT_TAB).click()
+        drag_elem = self.element_is_visible(self.locators.DRAG_ME)
+        drop_elem = self.element_is_visible(self.locators.OUTER_DROP_NOT_GREEDY)
+        inner_text_before = self.element_is_visible(self.locators.INNER_DROP_NOT_GREEDY).text
+        text_before, text_after, color_before, color_after = self.drop_in_or_through_area(method, drag_elem, drop_elem)
+        self.drag_and_drop_by_offset(drag_elem, randint(-300, 300), randint(-200, 200))
+        inner_text_after = self.element_is_visible(self.locators.INNER_DROP_NOT_GREEDY).text
+        return text_before, text_after, inner_text_before, inner_text_after

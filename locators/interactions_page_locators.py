@@ -22,3 +22,19 @@ class ResizablePageLocators:
     RESIZABLE_BOX_HANDLE = (By.XPATH, "//div[@id='resizableBoxWithRestriction']//span")
     RESIZABLE = (By.XPATH, "//div[@id='resizable']")
     RESIZABLE_HANDLE = (By.XPATH, "//div[@class='resizable-nolimit mt-4']//span")
+
+
+class DroppablePageLocators:
+    SIMPLE_TAB = (By.CSS_SELECTOR, 'a#droppableExample-tab-simple')
+    SIMPLE_DRAGGABLE = (By.CSS_SELECTOR, 'div#droppableExample-tabpane-simple div#draggable')
+    SIMPLE_DROPPABLE = (By.CSS_SELECTOR, 'div#droppableExample-tabpane-simple div#droppable')
+
+    ACCEPT_TAB = (By.XPATH, '//a[contains(text(), "Accept")]')
+    ACCEPTABLE = (By.CSS_SELECTOR, 'div#acceptDropContainer div#acceptable')
+    NOT_ACCEPTABLE = (By.CSS_SELECTOR, 'div.accept-drop-container div#notAcceptable')
+    ACCEPT_DROPPABLE = (By.CSS_SELECTOR, 'div#acceptDropContainer div#droppable')
+
+    PREVENT_TAB = (By.XPATH, '//a[contains(text(), "Prevent Propogation")]')
+    DRAG_ME = (By.CSS_SELECTOR, 'div#dragBox')
+    INNER_DROP_NOT_GREEDY = (By.CSS_SELECTOR, 'div#notGreedyInnerDropBox p')
+    OUTER_DROP_NOT_GREEDY = (By.CSS_SELECTOR, 'div#notGreedyDropBox p')

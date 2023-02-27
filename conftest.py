@@ -11,8 +11,8 @@ def driver():
     # driver = Chrome(executable_path="./chromedriver")
     driver_service = Service(ChromeDriverManager().install())
     driver = Chrome(service=driver_service)
+    driver.set_window_size(1400, 1000)
     driver.maximize_window()
-    # driver.set_window_size(1400, 1000)
     yield driver
     driver.quit()
 
