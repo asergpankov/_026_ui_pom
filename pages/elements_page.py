@@ -2,6 +2,7 @@ import base64
 from random import randint
 import time
 
+import allure
 import requests
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -15,6 +16,7 @@ from time import sleep
 class TextBoxPage(BasePage):
     locators = TextBoxPageLocators()
 
+    @allure.step('fill all text boxes _step')
     def fill_all_text_boxes(self):
         person_info = next(person_data_generator())
         full_name = person_info.full_name
@@ -22,13 +24,16 @@ class TextBoxPage(BasePage):
         current_address = person_info.current_address
         permanent_address = person_info.permanent_address
 
-        self.element_is_visible(self.locators.FULL_NAME).send_keys(full_name)
-        self.element_is_visible(self.locators.EMAIL).send_keys(email)
-        self.element_is_visible(self.locators.CURRENT_ADDRESS).send_keys(current_address)
-        self.element_is_visible(self.locators.PERMANENT_ADDRESS).send_keys(permanent_address)
-        self.element_is_visible(self.locators.SUBMIT).click()
+        with allure.step('generate data _step'):
+            self.element_is_visible(self.locators.FULL_NAME).send_keys(full_name)
+            self.element_is_visible(self.locators.EMAIL).send_keys(email)
+            self.element_is_visible(self.locators.CURRENT_ADDRESS).send_keys(current_address)
+            self.element_is_visible(self.locators.PERMANENT_ADDRESS).send_keys(permanent_address)
+        with allure.step('click on submit button _step'):
+            self.element_is_visible(self.locators.SUBMIT).click()
         return full_name, email, current_address, permanent_address
 
+    @allure.step('filled form check _step')
     def check_filled_form(self):
         full_name = self.element_is_present(self.locators.OUTPUT_FULL_NAME).text.split(":")[1]
         email = self.element_is_present(self.locators.OUTPUT_EMAIL).text.split(":")[1]
@@ -40,9 +45,11 @@ class TextBoxPage(BasePage):
 class CheckBoxPage(BasePage):
     locators = CheckBoxPageLocators()
 
+    @allure.step('expand all boxes _step')
     def expand_all_checkboxes(self):
         self.element_is_visible(self.locators.EXPAND_ALL_BUTTON).click()
 
+    @allure.step('random box click _step')
     def click_random_checkbox(self):
         checkboxes_list = self.elements_are_visible(self.locators.CHECKBOXES_LIST)
         count = len(checkboxes_list) + 5
@@ -52,6 +59,7 @@ class CheckBoxPage(BasePage):
             checkbox.click()
             count -= 1
 
+    @allure.step('get marked box _step')
     def get_marked_checkboxes(self):
         marked_boxes_list = self.elements_are_present(self.locators.CHECK_STATUS_BOXES)
         res = []
@@ -61,6 +69,7 @@ class CheckBoxPage(BasePage):
         # res = [title.find_element(By.XPATH, self.locators.CHECKBOX_TITLE).text for title in marked_boxes_list]
         return str(res).replace('.doc', '').replace(' ', '').lower()
 
+    @allure.step('get output result _step')
     def get_output_result(self):
         result_list = self.elements_are_present(self.locators.OUTPUT_RESULT)
         res = []
@@ -73,6 +82,7 @@ class CheckBoxPage(BasePage):
 class RadioButtonPage(BasePage):
     locators = RadioButtonPageLocators()
 
+    @allure.step('radio button click _step')
     def click_radio_button(self, choice):
         options = {
             'yes': self.locators.YES_RADIOBUTTON,
@@ -81,6 +91,7 @@ class RadioButtonPage(BasePage):
         }
         self.element_is_visible(options[choice]).click()
 
+    @allure.step('get output result _step')
     def get_output_result(self):
         return self.element_is_present(self.locators.OUTPUT_RESULT).text
 
@@ -88,6 +99,7 @@ class RadioButtonPage(BasePage):
 class WebTablePage(BasePage):
     locators = WebTablePageLocators()
 
+    @allure.step('add new person _step')
     def add_new_person(self):
         count = 1  # create a few persons
         while count > 0:
@@ -98,49 +110,60 @@ class WebTablePage(BasePage):
             age = person_info.age
             salary = person_info.salary
             department = person_info.department
-            self.element_is_visible(self.locators.ADD_BUTTON).click()
-            self.element_is_visible(self.locators.FIRSTNAME_INPUT).send_keys(first_name)
-            self.element_is_visible(self.locators.LASTNAME_INPUT).send_keys(last_name)
-            self.element_is_visible(self.locators.EMAIL_INPUT).send_keys(email)
-            self.element_is_visible(self.locators.AGE_INPUT).send_keys(age)
-            self.element_is_visible(self.locators.SALARY_INPUT).send_keys(salary)
-            self.element_is_visible(self.locators.DEPARTMENT_INPUT).send_keys(department)
-            self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+            with allure.step('generate data'):
+                self.element_is_visible(self.locators.ADD_BUTTON).click()
+                self.element_is_visible(self.locators.FIRSTNAME_INPUT).send_keys(first_name)
+                self.element_is_visible(self.locators.LASTNAME_INPUT).send_keys(last_name)
+                self.element_is_visible(self.locators.EMAIL_INPUT).send_keys(email)
+                self.element_is_visible(self.locators.AGE_INPUT).send_keys(age)
+                self.element_is_visible(self.locators.SALARY_INPUT).send_keys(salary)
+                self.element_is_visible(self.locators.DEPARTMENT_INPUT).send_keys(department)
+            with allure.step('submit button click'):
+                self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
             count -= 1
             return [first_name, last_name, str(age), email, str(salary), department]
 
+    @allure.step('added person check _step')
     def check_added_person(self):
         persons_lines = self.elements_are_present(self.locators.PERSON_LINE_IN_LIST)
         data = [item.text.splitlines() for item in persons_lines]
         return data
 
+    @allure.step('search box input _step')
     def search_box_input(self, key_word):
         self.element_is_visible(self.locators.SEARCH_BOX_INPUT).send_keys(key_word)
 
+    @allure.step('update person info age _step')
     def update_person_info_age(self):
         person_info = next(person_data_generator())
         age = person_info.age
-        self.element_is_visible(self.locators.UPDATE_BTN).click()
-        self.element_is_visible(self.locators.AGE_FIELD_INPUT).clear()
-        self.element_is_visible(self.locators.AGE_FIELD_INPUT).send_keys(age)
-        self.element_is_visible(self.locators.SUBMIT_BTN_UPDATE).click()
+        with allure.step('send keys and click update'):
+            self.element_is_visible(self.locators.UPDATE_BTN).click()
+            self.element_is_visible(self.locators.AGE_FIELD_INPUT).clear()
+            self.element_is_visible(self.locators.AGE_FIELD_INPUT).send_keys(age)
+            self.element_is_visible(self.locators.SUBMIT_BTN_UPDATE).click()
         return str(age)
 
+    @allure.step('update person info email _step')
     def update_person_info_email(self):
         person_info = next(person_data_generator())
         email = person_info.email
-        self.element_is_visible(self.locators.UPDATE_BTN).click()
-        self.element_is_visible(self.locators.EMAIL_FIELD_INPUT).clear()
-        self.element_is_visible(self.locators.EMAIL_FIELD_INPUT).send_keys(email)
-        self.element_is_visible(self.locators.SUBMIT_BTN_UPDATE).click()
+        with allure.step('send keys and click update'):
+            self.element_is_visible(self.locators.UPDATE_BTN).click()
+            self.element_is_visible(self.locators.EMAIL_FIELD_INPUT).clear()
+            self.element_is_visible(self.locators.EMAIL_FIELD_INPUT).send_keys(email)
+            self.element_is_visible(self.locators.SUBMIT_BTN_UPDATE).click()
         return email
 
+    @allure.step('delete person info _step')
     def delete_person_info_btn(self):
         self.element_is_visible(self.locators.DELETE_PERSON_INFO_BTN).click()
 
+    @allure.step('delete info message _step')
     def check_deleted_person_message(self):
         return self.element_is_present(self.locators.NO_ROWS_DATA).text
 
+    @allure.step('iterate on rows _step')
     def iterate_on_rows(self):
         count = [5, 10, 20, 25, 50, 100]
         data = []
@@ -152,6 +175,7 @@ class WebTablePage(BasePage):
             data.append(self.check_count_rows())
         return data
 
+    @allure.step('count rows _step')
     def check_count_rows(self):
         count_rows_list = self.elements_are_present(self.locators.PERSON_LINE_IN_LIST)
         return len(count_rows_list)
@@ -160,6 +184,7 @@ class WebTablePage(BasePage):
 class ButtonsPage(BasePage):
     locators = ButtonsPageLocators()
 
+    @allure.step('click on different buttons _step')
     def click_on_different_buttons(self, click_type):
         if click_type == "double_left":
             self.double_click_action(self.element_is_visible(self.locators.DOUBLE_CLICK_BTN))
@@ -178,6 +203,7 @@ class ButtonsPage(BasePage):
 class LinksPage(BasePage):
     locators = LinksPageLocators()
 
+    @allure.step('new tab home link check _step')
     def check_new_tab_home_link(self):
         home_link = self.element_is_visible(self.locators.HOME_LINK)
         href = home_link.get_attribute('href')
@@ -195,7 +221,8 @@ class LinksPage(BasePage):
         bad_req_link.click()
         href = bad_req_link.get_attribute('href')
         r = requests.get(bad_request)
-        return r.status_code if href == "javascript:void(0)" and r.status_code == 400 else r.status_code
+        return r.status_code if href == "javascript:void(0)" and r.status_code == 400 \
+            else r.status_code
 
 
 class UploadAndDownload(BasePage):

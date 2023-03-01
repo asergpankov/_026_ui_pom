@@ -1,3 +1,6 @@
+import time
+
+import allure
 import pytest
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.service import Service
@@ -13,6 +16,9 @@ def driver():
     driver = Chrome(service=driver_service)
     driver.set_window_size(1400, 1000)
     driver.maximize_window()
+    attach = driver.get_screenshot_as_png()
+    # allure.attach(attach, name=f'screenshot{driver.session_id}', attachment_type=allure.attachment_type.PNG)
+    allure.attach(attach, name=f'screenshot{time.strftime("%Y-%m-%d-%H.%M")}', attachment_type=allure.attachment_type.PNG)
     yield driver
     driver.quit()
 
