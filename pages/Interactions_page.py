@@ -145,26 +145,23 @@ class DroppablePage(BasePage):
         return text_before, text_after, color_before, color_after
 
     # TODO need an unification of drop funks
-    def simple_drop(self, method):
-        self.element_is_visible(self.locators.SIMPLE_TAB).click()
-        drag_elem = self.element_is_visible(self.locators.SIMPLE_DRAGGABLE)
-        drop_elem = self.element_is_visible(self.locators.SIMPLE_DROPPABLE)
-        text_before, text_after, color_before, color_after = self.drop_in_or_through_area(method, drag_elem, drop_elem)
-        self.drag_and_drop_by_offset(drag_elem, randint(-300, 300), randint(-200, 200))
-        return text_before, text_after, color_before, color_after
+    def regular_drop(self, tab_name, method):
+        if tab_name == 'simple':
+            tab = self.locators.SIMPLE_TAB
+            draggable = self.locators.SIMPLE_DRAGGABLE
+            droppable = self.locators.SIMPLE_DROPPABLE
+        elif tab_name == 'not accept':
+            tab = self.locators.ACCEPT_TAB
+            draggable = self.locators.NOT_ACCEPTABLE
+            droppable = self.locators.ACCEPT_DROPPABLE
+        elif tab_name == 'accept':
+            tab = self.locators.ACCEPT_TAB
+            draggable = self.locators.ACCEPTABLE
+            droppable = self.locators.ACCEPT_DROPPABLE
 
-    def not_accept_drop(self, method):
-        self.element_is_visible(self.locators.ACCEPT_TAB).click()
-        drag_elem = self.element_is_visible(self.locators.NOT_ACCEPTABLE)
-        drop_elem = self.element_is_visible(self.locators.ACCEPT_DROPPABLE)
-        text_before, text_after, color_before, color_after = self.drop_in_or_through_area(method, drag_elem, drop_elem)
-        self.drag_and_drop_by_offset(drag_elem, randint(-300, 300), randint(-200, 200))
-        return text_before, text_after, color_before, color_after
-
-    def accept_drop(self, method):
-        self.element_is_visible(self.locators.ACCEPT_TAB).click()
-        drag_elem = self.element_is_visible(self.locators.ACCEPTABLE)
-        drop_elem = self.element_is_visible(self.locators.ACCEPT_DROPPABLE)
+        self.element_is_visible(tab).click()
+        drag_elem = self.element_is_visible(draggable)
+        drop_elem = self.element_is_visible(droppable)
         text_before, text_after, color_before, color_after = self.drop_in_or_through_area(method, drag_elem, drop_elem)
         self.drag_and_drop_by_offset(drag_elem, randint(-300, 300), randint(-200, 200))
         return text_before, text_after, color_before, color_after

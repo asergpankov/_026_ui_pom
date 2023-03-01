@@ -88,7 +88,7 @@ class TestInteractionsPage:
         def test_simple_drop_in_area(self, driver):
             droppable = DroppablePage(driver, "https://demoqa.com/droppable")
             droppable.open_browser()
-            text_before, text_after, color_before, color_after = droppable.simple_drop('in')
+            text_before, text_after, color_before, color_after = droppable.regular_drop('simple', 'in')
             assert text_before == 'Drop here'
             assert text_after == 'Dropped!'
             assert color_before == 'rgba(0, 0, 0, 0)'
@@ -97,21 +97,21 @@ class TestInteractionsPage:
         def test_simple_drop_through_area(self, driver):
             droppable = DroppablePage(driver, "https://demoqa.com/droppable")
             droppable.open_browser()
-            text_before, text_after, color_before, color_after = droppable.simple_drop('through')
+            text_before, text_after, color_before, color_after = droppable.regular_drop('simple', 'through')
             assert text_before == text_after
             assert color_before == color_after
 
         def test_not_acceptable_drop_in_area(self, driver):
             droppable = DroppablePage(driver, "https://demoqa.com/droppable")
             droppable.open_browser()
-            text_before, text_after, color_before, color_after = droppable.not_accept_drop('in')
+            text_before, text_after, color_before, color_after = droppable.regular_drop('not accept', 'in')
             assert text_before == text_after
             assert color_before == color_after
 
         def test_not_acceptable_drop_through_area(self, driver):
             droppable = DroppablePage(driver, "https://demoqa.com/droppable")
             droppable.open_browser()
-            text_before, text_after, color_before, color_after = droppable.not_accept_drop('through')
+            text_before, text_after, color_before, color_after = droppable.regular_drop('not accept', 'through')
             assert text_before == text_after
             assert color_before == color_after
 
@@ -120,7 +120,7 @@ class TestInteractionsPage:
         def test_acceptable_drop_in_area(self, driver):
             droppable = DroppablePage(driver, "https://demoqa.com/droppable")
             droppable.open_browser()
-            text_before, text_after, color_before, color_after = droppable.accept_drop('in')
+            text_before, text_after, color_before, color_after = droppable.regular_drop('accept', 'in')
             assert text_before == 'Drop here'
             assert text_after == 'Dropped!'
             assert color_before == 'rgba(0, 0, 0, 0)'
