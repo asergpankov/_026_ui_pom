@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from random import randint
 
 
-class StudentRegistrationFormLocators:
+class StudentRegistrationFormPageLocators:
     FIRST_NAME = (By.CSS_SELECTOR, 'input[placeholder="First Name"]')
     LAST_NAME = (By.CSS_SELECTOR, 'input[placeholder="Last Name"]')
     GENDER_RADIO_BTNS = (By.CSS_SELECTOR, f'label[for="gender-radio-{randint(1, 3)}"]')

@@ -15,6 +15,8 @@ class TestElements:
     class TestTextBox:
         @allure.title('data in TextBox')
         def test_all_data_in_text_boxes(self, driver):
+            """Check that all fields are filled with user data correctly
+            """
             text_box_page = TextBoxPage(driver, "https://demoqa.com/text-box")
             text_box_page.open_browser()
             full_name, email, current_address, permanent_address = text_box_page.fill_all_text_boxes()
@@ -29,6 +31,8 @@ class TestElements:
     class TestCheckBox:
         @allure.title('Expand checkboxes on page')
         def test_checkbox_page(self, driver):
+            """Expand the list of all checkboxes, go through them and click randomly
+            """
             checkbox_page = CheckBoxPage(driver, "https://demoqa.com/checkbox")
             checkbox_page.open_browser()
             checkbox_page.expand_all_checkboxes()
@@ -41,6 +45,8 @@ class TestElements:
     class TestRadioButton:
         @allure.title('click on radio buttons')
         def test_radio_button(self, driver):
+            """Clicking on radio buttons randomly
+            """
             radio_button_page = RadioButtonPage(driver, "https://demoqa.com/radio-button")
             radio_button_page.open_browser()
             radio_button_page.click_radio_button('yes')
@@ -58,6 +64,8 @@ class TestElements:
     class TestWebTable:
         @allure.title('webtable add person')
         def test_webtable_add_person(self, driver):
+            """Add and check adding data of a new person
+            """
             webtable_page = WebTablePage(driver, "https://demoqa.com/webtables")
             webtable_page.open_browser()
             new_person = webtable_page.add_new_person()
@@ -66,6 +74,8 @@ class TestElements:
 
         @allure.title('webtable search person')
         def test_webtable_search_person(self, driver):
+            """Searching person on the table
+            """
             webtable_page = WebTablePage(driver, "https://demoqa.com/webtables")
             webtable_page.open_browser()
             key_word = webtable_page.add_new_person()[randint(0, 5)]
@@ -75,6 +85,8 @@ class TestElements:
 
         @allure.title('webtable update person info age')
         def test_web_table_update_person_info_age(self, driver):
+            """Updating person age on the table
+            """
             web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
             web_table_page.open_browser()
             last_name = web_table_page.add_new_person()[1]
@@ -85,6 +97,8 @@ class TestElements:
 
         @allure.title('webtable update person info email')
         def test_web_table_update_person_info_email(self, driver):
+            """Updating person email on the table
+            """
             web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
             web_table_page.open_browser()
             last_name = web_table_page.add_new_person()[1]
@@ -95,6 +109,8 @@ class TestElements:
 
         @allure.title('webtable delete person info')
         def test_web_table_delete_person_info(self, driver):
+            """Delete person info from the table
+            """
             web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
             web_table_page.open_browser()
             email = web_table_page.add_new_person()[3]
@@ -106,6 +122,8 @@ class TestElements:
         # @pytest.mark.skip(reason="need to remove footer for interacting with '100 rows'")
         @allure.title('webtable rows count')
         def test_web_table_change_rows_count(self, driver):
+            """Changing rows count and check it after
+            """
             web_table_page = WebTablePage(driver, "https://demoqa.com/webtables")
             web_table_page.open_browser()
             web_table_page.remove_footer()
@@ -116,6 +134,8 @@ class TestElements:
     class TestButtonsPage:
         @allure.title('different click on the buttons')
         def test_different_click_on_the_buttons(self, driver):
+            """Clicking on different buttons and check results
+            """
             buttons_page = ButtonsPage(driver, "https://demoqa.com/buttons")
             buttons_page.open_browser()
             double = buttons_page.click_on_different_buttons("double_left")

@@ -2,14 +2,14 @@ import os
 import time
 from random import choice
 
-from pages.practice_form_page import StudentRegistrationForm
+from pages.practice_form_page import StudentRegistrationFormPage
 
 
 class TestForm:
     class TestStudentRegistrationForm:
         def test_registration_form(self, driver, tmp_file):
             f_name, f_path = tmp_file
-            test_registration_table = StudentRegistrationForm(driver, "https://demoqa.com/automation-practice-form")
+            test_registration_table = StudentRegistrationFormPage(driver, "https://demoqa.com/automation-practice-form")
             test_registration_table.open_browser()
             state_list = ["NCR", "Uttar Pradesh", "Haryana", "Rajasthan"]
             person_data = test_registration_table.fill_all_fields(f_name, f_path, choice(state_list))

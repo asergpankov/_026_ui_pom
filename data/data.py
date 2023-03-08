@@ -15,6 +15,7 @@ class Person:
     mobile: str
     date_of_birth: str
     mac_address: str
+    password: str
     product_number: str
     sentence: str
 

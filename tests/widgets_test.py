@@ -2,6 +2,7 @@ import pytest
 from datetime import date
 from pages.widgets_page import AccordianPage, AutoCompletePage, DatePickerPage, SliderPage, ProgressBarPage, TabsPage, \
     ToolTipsPage, MenuPage, SelectMenuPage
+from src.enums.global_enums import MenuPageEnums
 
 
 class TestWidgetsPage:
@@ -117,8 +118,7 @@ class TestWidgetsPage:
             menu_page = MenuPage(driver, "https://demoqa.com/menu")
             menu_page.open_browser()
             result_list = menu_page.go_through_menu_items()
-            assert result_list == ['Main Item 1', 'Main Item 2', 'Sub Item', 'Sub Item', 'SUB SUB LIST »',
-                                   'Sub Sub Item 1', 'Sub Sub Item 2', 'Main Item 3']
+            assert result_list == MenuPageEnums.LIST_NAMES.value, 'items in the list were changed'
 
     class TestSelectMenuPage:
         def test_select_menu_works_fine(self, driver):

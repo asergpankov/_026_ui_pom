@@ -1,5 +1,5 @@
 from generator.generator import person_data_generator
-from locators.alerts_frame_windows_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators, \
+from locators.alerts_frame_windows_page_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators, \
     NestedFramesPageLocators, ModalDialogsPageLocators
 from pages.base_page import BasePage
 from time import sleep, monotonic

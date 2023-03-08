@@ -2,18 +2,18 @@ import base64
 import os
 from random import randint, choice
 import time
-
+from src.enums.global_enums import StudentRegistrationFormPageEnums
 import requests
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from generator.generator import person_data_generator
-from locators.practice_form_page_locators import StudentRegistrationFormLocators
+from locators.practice_form_page_locators import StudentRegistrationFormPageLocators
 from pages.base_page import BasePage
 from time import sleep
 
 
-class StudentRegistrationForm(BasePage):
-    locators = StudentRegistrationFormLocators()
+class StudentRegistrationFormPage(BasePage):
+    locators = StudentRegistrationFormPageLocators()
 
     def fill_all_fields(self, f_name, f_path, state):
         person_data = next(person_data_generator())
@@ -35,14 +35,13 @@ class StudentRegistrationForm(BasePage):
         self.element_is_visible(self.locators.DATE_OF_BIRTH).send_keys(Keys.RETURN)
 
         # SUBJECTS INPUT
-        subjects_list = ["Hindi", "English", "Maths", "Physics", "Chemistry", "Biology", "Computer Science", "Commerce",
-                         "Accounting", "Economics", "Arts", "Social Studies", "History", "Civics", ]
+        subjects_list = StudentRegistrationFormPageEnums.SUBJECTS.value
         subj_count = randint(1, len(subjects_list))
         subj_used = []
         while subj_count > 0:
             subject = choice(subjects_list)
             if subject not in subj_used:
-                self.element_is_visible(self.locators.SUBJECT).send_keys(subject)  # TO DO // take subjects from source/bundle.js
+                self.element_is_visible(self.locators.SUBJECT).send_keys(subject)  # TODO // take subjects from source/bundle.js
                 sleep(0.7)
                 self.element_is_visible(self.locators.SUBJECT).send_keys(Keys.ENTER)
                 subj_count -= 1
@@ -63,7 +62,7 @@ class StudentRegistrationForm(BasePage):
         self.element_is_visible(self.locators.CURRENT_ADDRESS).send_keys(current_address)
 
         # STATES and CITIES INPUT
-        self.element_is_visible(self.locators.SELECT_STATE_INP).send_keys(state) # TO DO // def for mixing states and cities
+        self.element_is_visible(self.locators.SELECT_STATE_INP).send_keys(state) # TODO // def for mixing states and cities
         self.element_is_visible(self.locators.SELECT_STATE_INP).send_keys(Keys.ENTER)
         if state == "NCR":
             nrc_cities = ["Delhi", "Gurgaon", "Noida"]
