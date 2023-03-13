@@ -1,17 +1,17 @@
-    *Подготовка подключения allure*
+Подготовка подключения allure
 
-Установка Java 8 SE Runtime Environment 8u361
-# https://www.oracle.com/cis/java/technologies/downloads/
++Установка Java 8 SE Runtime Environment 8u361
+   https://www.oracle.com/cis/java/technologies/downloads/
 
-Создание директории
-# sudo mkdir /usr/lib/jvm
++Создание директории
+   sudo mkdir /usr/lib/jvm
 
-Распаковка архива
-# sudo tar -zxf /home/username/Загрузки/tarname -C /usr/lib/jvm
++Распаковка архива
+sudo tar -zxf /home/username/Загрузки/tarname -C /usr/lib/jvm
 
-Установка в систему
-# sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/foldername/bin/java" 1500
-# sudo update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/foldername/bin/javaws" 1500
++Установка в систему
+   sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/foldername/bin/java" 1500
+   sudo update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/foldername/bin/javaws" 1500
 
 Редактируем environment
 # sudo nano /etc/environment
