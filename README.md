@@ -52,7 +52,7 @@
 
 =======
 
-## Проставить теги в тестовом модуле: suite, feature, title
+### Проставить теги в тестовом модуле: suite, feature, title
 
 Cтруктура вложенности:
 
@@ -71,11 +71,10 @@ Cтруктура вложенности:
 
 ======
 
-## Проставить теги в page модуле: step
+### Проставить теги в page модуле: step
 
-`@allure.step('fill all text boxes _step')`
-
-    `with allure.step('generate data _step'):`
+@allure.step('fill all text boxes _step')
+    with allure.step('generate data _step'):
 
 Запустить выборочную генерацию отчета
 
