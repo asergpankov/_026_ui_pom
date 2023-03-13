@@ -4,15 +4,17 @@
 [скачать с офф. ресурса oracle.com](https://www.oracle.com/cis/java/technologies/downloads/)
 
 - создать директорию
-- 
+
 `sudo mkdir /usr/lib/jvm`
 
-- Распаковка архива
-    sudo tar -zxf /home/username/Загрузки/tarname -C /usr/lib/jvm
+- распаковать архив (указать коректный адрес и имя)
 
-- Установка в систему
-    sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/foldername/bin/java" 1500
-    sudo update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/foldername/bin/javaws" 1500
+`sudo tar -zxf /home/username/Загрузки/tarname -C /usr/lib/jvm`
+
+- установить в систему
+
+`sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/foldername/bin/java" 1500`
+`sudo update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/foldername/bin/javaws" 1500`
 
 Редактируем environment
 # sudo nano /etc/environment
