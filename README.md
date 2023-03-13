@@ -1,10 +1,10 @@
 Подготовка подключения allure
 
 - Установка Java 8 SE Runtime Environment 8u361
-    https://www.oracle.com/cis/java/technologies/downloads/
+[oracle.com](https://www.oracle.com/cis/java/technologies/downloads/)
 
 - Создание директории
-    sudo mkdir /usr/lib/jvm
+`sudo mkdir /usr/lib/jvm`
 
 - Распаковка архива
     sudo tar -zxf /home/username/Загрузки/tarname -C /usr/lib/jvm
