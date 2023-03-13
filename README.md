@@ -1,46 +1,59 @@
-Подготовка подключения allure
+### Подготовка подключения allure
 
 - установить Java 8 SE Runtime Environment 8u361
-[скачать с офф. ресурса oracle.com](https://www.oracle.com/cis/java/technologies/downloads/)
+
+[скачать архив с офф. ресурса oracle.com](https://www.oracle.com/cis/java/technologies/downloads/)
 
 - создать директорию
 
 `sudo mkdir /usr/lib/jvm`
 
-- распаковать архив (указать коректный адрес и имя)
+- распаковать архив (указать корректный адрес, имя)
 
 `sudo tar -zxf /home/username/Загрузки/tarname -C /usr/lib/jvm`
 
 - установить в систему
 
 `sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/foldername/bin/java" 1500`
+
 `sudo update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/foldername/bin/javaws" 1500`
 
-Редактируем environment
-# sudo nano /etc/environment
+- редактируем _environment_
+    
+    `sudo nano /etc/environment`
 
--добавляем в /etc/environment следующее:
+- добавляем в _/etc/environment_ следующее:
 
-JAVA_HOME="/usr/lib/jvm/foldername"
+`JAVA_HOME="/usr/lib/jvm/foldername"`
 
--применение изменений без перезагрузки
-# source /etc/environment
+- применение изменений без перезагрузки
+
+    `source /etc/environment`
+    
 ======
 
-Скачать allure из repository
-# https://github.com/allure-framework/allure2/tags
+- cкачать allure 
+ 
+- [из офф. репозитория](https://github.com/allure-framework/allure2/tags)
 
--распаковать архив allur в папку проекта
--добавить alias в .bashrc
-# nano .bashrc
-# alias allure='allure-2.21.0/bin/allure'
+- распаковать архив allur в папку проекта
 
--перегрузить терминал
-======
+- добавить alias в _.bashrc_
 
-Проставить теги в тестовом модуле: suite, feature, title
+- открываем:
+    
+    `nano .bashrc`
 
--структура вложенности:
+- добавляем:
+
+    `alias allure='allure-2.21.0/bin/allure'`
+
+- перегрузить терминал
+
+
+### Проставить теги в тестовом модуле: suite, feature, title
+
+- структура вложенности:
 @allure.suite('Elements')
     @allure.feature('TextBox')
         @allure.title('Check data in TextBox')
