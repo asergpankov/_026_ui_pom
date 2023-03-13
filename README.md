@@ -12,7 +12,7 @@
 
 `sudo tar -zxf /home/username/Загрузки/tarname -C /usr/lib/jvm`
 
-- установить в систему
+- установить в систему (указать корректный _foldername_)
 
 `sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/foldername/bin/java" 1500`
 
@@ -34,7 +34,7 @@
 
 - cкачать allure 
  
-- [из офф. репозитория](https://github.com/allure-framework/allure2/tags)
+[из офф. репозитория](https://github.com/allure-framework/allure2/tags)
 
 - распаковать архив allur в папку проекта
 
@@ -50,25 +50,33 @@
 
 - перегрузить терминал
 
+=======
 
-### Проставить теги в тестовом модуле: suite, feature, title
+## Проставить теги в тестовом модуле: suite, feature, title
 
-- структура вложенности:
+Cтруктура вложенности:
+
 @allure.suite('Elements')
     @allure.feature('TextBox')
         @allure.title('Check data in TextBox')
 
 
-Как запустить генерацию репортов allure
-# pytest --alluredir=tests/allure_results tests/elements_test.py
+Запустить генерацию репортов allure
+
+    `pytest --alluredir=tests/allure_results tests/elements_test.py`
 
 Обработать результаты репортов
-# allure serve tests/allure_results/
+
+    `allure serve tests/allure_results/`
+
 ======
 
-Проставить теги в page модуле: step
-@allure.step('fill all text boxes _step')
-    with allure.step('generate data _step'):
+## Проставить теги в page модуле: step
+
+`@allure.step('fill all text boxes _step')`
+
+    `with allure.step('generate data _step'):`
 
 Запустить выборочную генерацию отчета
-# pytest --alluredir=tests/allure_results tests/elements_test.py::TestElements::TestTextBox::test_all_data_in_text_boxes
+
+`pytest --alluredir=tests/allure_results tests/elements_test.py::TestElements::TestTextBox::test_all_data_in_text_boxes`
