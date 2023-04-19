@@ -1,58 +1,81 @@
-    *Подготовка подключения allure*
+### Подготовка подключения allure
 
-Установка Java 8 SE Runtime Environment 8u361
-# https://www.oracle.com/cis/java/technologies/downloads/
+- установить Java 8 SE Runtime Environment 8u361
 
-Создание директории
-# sudo mkdir /usr/lib/jvm
+[скачать архив с офф. ресурса oracle.com](https://www.oracle.com/cis/java/technologies/downloads/)
 
-Распаковка архива
-# sudo tar -zxf /home/username/Загрузки/tarname -C /usr/lib/jvm
+- создать директорию
 
-Установка в систему
-# sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/foldername/bin/java" 1500
-# sudo update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/foldername/bin/javaws" 1500
+`sudo mkdir /usr/lib/jvm`
 
-Редактируем environment
-# sudo nano /etc/environment
+- распаковать архив (указать корректный адрес, имя)
 
-добавляем в /etc/environment следующее:
+`sudo tar -zxf /home/username/Загрузки/tarname -C /usr/lib/jvm`
 
-JAVA_HOME="/usr/lib/jvm/foldername"
+- установить в систему (указать корректный _foldername_)
 
-применение изменений без перезагрузки
-# source /etc/environment
+`sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/foldername/bin/java" 1500`
+
+`sudo update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/lib/jvm/foldername/bin/javaws" 1500`
+
+- редактируем _environment_
+    
+    `sudo nano /etc/environment`
+
+- добавляем в _/etc/environment_ следующее:
+
+`JAVA_HOME="/usr/lib/jvm/foldername"`
+
+- применение изменений без перезагрузки
+
+    `source /etc/environment`
+    
 ======
 
-Скачать allure из repository
-# https://github.com/allure-framework/allure2/tags
+- cкачать allure 
+ 
+[из офф. репозитория](https://github.com/allure-framework/allure2/tags)
 
-распаковать архив allur в папку проекта
-добавить alias в .bashrc
-# nano .bashrc
-# alias allure='allure-2.21.0/bin/allure'
+- распаковать архив allur в папку проекта
 
--перегрузить терминал
-======
+- добавить alias в _.bashrc_
 
-Проставить теги в тестовом модуле: suite, feature, title
+- открываем:
+    
+    `nano .bashrc`
 
-структура вложенности:
+- добавляем:
+
+    `alias allure='allure-2.21.0/bin/allure'`
+
+- перегрузить терминал
+
+=======
+
+### Проставить теги в тестовом модуле: suite, feature, title
+
+Cтруктура вложенности:
+
 @allure.suite('Elements')
     @allure.feature('TextBox')
         @allure.title('Check data in TextBox')
 
 
-Как запустить генерацию репортов allure
-# pytest --alluredir=tests/allure_results tests/elements_test.py
+Запустить генерацию репортов allure
+
+    `pytest --alluredir=tests/allure_results tests/elements_test.py`
 
 Обработать результаты репортов
-# allure serve tests/allure_results/
+
+    `allure serve tests/allure_results/`
+
 ======
 
-Проставить теги в page модуле: step
+### Проставить теги в page модуле: step
+
 @allure.step('fill all text boxes _step')
     with allure.step('generate data _step'):
 
 Запустить выборочную генерацию отчета
-# pytest --alluredir=tests/allure_results tests/elements_test.py::TestElements::TestTextBox::test_all_data_in_text_boxes
+
+`pytest --alluredir=tests/allure_results tests/elements_test.py::TestElements::TestTextBox::test_all_data_in_text_boxes`
