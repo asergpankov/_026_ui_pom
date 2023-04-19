@@ -16,19 +16,19 @@
 Редактируем environment
 # sudo nano /etc/environment
 
--добавляем в /etc/environment следующее:
+добавляем в /etc/environment следующее:
 
 JAVA_HOME="/usr/lib/jvm/foldername"
 
--применение изменений без перезагрузки
+применение изменений без перезагрузки
 # source /etc/environment
 ======
 
 Скачать allure из repository
 # https://github.com/allure-framework/allure2/tags
 
--распаковать архив allur в папку проекта
--добавить alias в .bashrc
+распаковать архив allur в папку проекта
+добавить alias в .bashrc
 # nano .bashrc
 # alias allure='allure-2.21.0/bin/allure'
 
@@ -37,7 +37,7 @@ JAVA_HOME="/usr/lib/jvm/foldername"
 
 Проставить теги в тестовом модуле: suite, feature, title
 
--структура вложенности:
+структура вложенности:
 @allure.suite('Elements')
     @allure.feature('TextBox')
         @allure.title('Check data in TextBox')

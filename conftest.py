@@ -18,7 +18,7 @@ user_agent = UserAgent()
 def driver():
     warnings.filterwarnings("ignore", category=DeprecationWarning)
     # driver = Chrome(executable_path="./chromedriver")
-    # driver_service = Service(ChromeDriverManager().install())
+    driver_service = Service(ChromeDriverManager().install())
     options = Options()
     options.add_argument(user_agent.random)
     # options.headless=True

@@ -41,9 +41,9 @@ class StudentRegistrationFormPage(BasePage):
         while subj_count > 0:
             subject = choice(subjects_list)
             if subject not in subj_used:
-                self.element_is_visible(self.locators.SUBJECT).send_keys(subject)  # TODO // take subjects from source/bundle.js
+                self.element_is_visible(self.locators.SUBJECT_INPUT).send_keys(subject)  # TODO // take subjects from source/bundle.js
                 sleep(0.7)
-                self.element_is_visible(self.locators.SUBJECT).send_keys(Keys.ENTER)
+                self.element_is_visible(self.locators.SUBJECT_INPUT).send_keys(Keys.ENTER)
                 subj_count -= 1
                 subj_used.append(subject)
             else:

@@ -53,8 +53,8 @@ class SelectablePage(BasePage):
             }
         }
         self.element_is_visible(tabs[tab_name]['tab']).click()
-        elements_names, elements_on_page = self.get_elements_text(tabs[tab_name]['items'])
-        return elements_names, elements_on_page
+        elements_names, elements_len = self.get_elements_text(tabs[tab_name]['items'])
+        return elements_names, elements_len
 
     def clicking_on_random_items(self, tab_name):
         if tab_name == 'list':

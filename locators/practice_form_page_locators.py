@@ -9,7 +9,7 @@ class StudentRegistrationFormPageLocators:
     EMAIL = (By.CSS_SELECTOR, 'input[placeholder="name@example.com"]')
     MOBILE_NMB = (By.CSS_SELECTOR, 'input[placeholder="Mobile Number"]')
     DATE_OF_BIRTH = (By.CSS_SELECTOR, 'div[class*="input-container"] input[id="dateOfBirthInput"]')
-    SUBJECT = (By.CSS_SELECTOR, 'input[id="subjectsInput"]')
+    SUBJECT_INPUT = (By.CSS_SELECTOR, 'input[id="subjectsInput"]')
     # HOBBIES = (By.CSS_SELECTOR, f'label[for="hobbies-checkbox-{randint(1, 3)}"]')
     UPLOAD_FILE = (By.CSS_SELECTOR, 'input[id="uploadPicture"]')
 

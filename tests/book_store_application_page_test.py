@@ -13,6 +13,7 @@ PASSWORD = os.getenv("PASSWORD")
 
 
 class TestBookStoreApplicationPage:
+    @pytest.mark.login
     class TestLoginPage:
         def test_valid_user_creds(self, driver):
             login_page = LoginPage(driver, "https://demoqa.com/login")

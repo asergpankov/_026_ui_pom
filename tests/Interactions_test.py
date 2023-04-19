@@ -19,16 +19,16 @@ class TestInteractionsPage:
         def test_check_names_and_numbers_on_list_tab(self, driver):
             selectable = SelectablePage(driver, "https://demoqa.com/selectable")
             selectable.open_browser()
-            elements_names, elements_on_page = selectable.check_elements_on_page('list')
+            elements_names, elements_len = selectable.check_elements_on_page('list')
             assert elements_names == SelectablePageEnums.LIST_NAMES.value, 'items names were changed'
-            assert len(elements_names) == elements_on_page, 'number of elements is not equal current names'
+            assert len(elements_names) == elements_len, 'number of elements is not equal current names'
 
         def test_check_names_and_numbers_on_grid_tab(self, driver):
             selectable = SelectablePage(driver, "https://demoqa.com/selectable")
             selectable.open_browser()
-            elements_names, elements_on_page = selectable.check_elements_on_page('grid')
+            elements_names, elements_len = selectable.check_elements_on_page('grid')
             assert elements_names == SelectablePageEnums.GRID_NAMES.value, 'items names were changed'
-            assert len(elements_names) == elements_on_page, 'number of elements is not equal current names'
+            assert len(elements_names) == elements_len, 'number of elements is not equal current names'
 
         def test_check_selectable_item_on_list_tab(self, driver):
             selectable = SelectablePage(driver, "https://demoqa.com/selectable")
