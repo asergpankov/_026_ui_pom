@@ -6,7 +6,8 @@ import allure
 import requests
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from generator.generator import person_data_generator
+
+from data.data import UserData as ud
 from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators, RadioButtonPageLocators, \
     WebTablePageLocators, ButtonsPageLocators, LinksPageLocators, UploadAndDownloadLocators, DynamicPropertiesLocators
 from pages.base_page import BasePage
@@ -18,27 +19,27 @@ class TextBoxPage(BasePage):
 
     @allure.step('fill all text boxes _step')
     def fill_all_text_boxes(self):
-        person_info = next(person_data_generator())
-        full_name = person_info.full_name
-        email = person_info.email
-        current_address = person_info.current_address
-        permanent_address = person_info.permanent_address
+        data = ud.generate_data()
+        full_name = data.full_name
+        email = data.email
+        current_address = data.current_address
+        permanent_address = data.permanent_address
 
         with allure.step('generate data _step'):
-            self.element_is_visible(self.locators.FULL_NAME).send_keys(full_name)
-            self.element_is_visible(self.locators.EMAIL).send_keys(email)
-            self.element_is_visible(self.locators.CURRENT_ADDRESS).send_keys(current_address)
-            self.element_is_visible(self.locators.PERMANENT_ADDRESS).send_keys(permanent_address)
+            self.set_value(self.locators.FULL_NAME, full_name)
+            self.set_value(self.locators.EMAIL, email)
+            self.set_value(self.locators.CURRENT_ADDRESS, current_address)
+            self.set_value(self.locators.PERMANENT_ADDRESS, permanent_address)
         with allure.step('click on submit button _step'):
-            self.element_is_visible(self.locators.SUBMIT).click()
+            self.left_click_on_element(self.locators.SUBMIT)
         return full_name, email, current_address, permanent_address
 
     @allure.step('filled form check _step')
     def check_filled_form(self):
-        full_name = self.element_is_present(self.locators.OUTPUT_FULL_NAME).text.split(":")[1]
-        email = self.element_is_present(self.locators.OUTPUT_EMAIL).text.split(":")[1]
-        current_address = self.element_is_present(self.locators.OUTPUT_CURRENT_ADDRESS).text.split(":")[1]
-        permanent_address = self.element_is_present(self.locators.OUTPUT_PERMANENT_ADDRESS).text.split(":")[1]
+        full_name = self.get_element_text(self.locators.OUTPUT_FULL_NAME).split(":")[1]
+        email = self.get_element_text(self.locators.OUTPUT_EMAIL).split(":")[1]
+        current_address = self.get_element_text(self.locators.OUTPUT_CURRENT_ADDRESS).split(":")[1]
+        permanent_address = self.get_element_text(self.locators.OUTPUT_PERMANENT_ADDRESS).split(":")[1]
         return full_name, email, current_address, permanent_address
 
 
@@ -47,12 +48,12 @@ class CheckBoxPage(BasePage):
 
     @allure.step('expand all boxes _step')
     def expand_all_checkboxes(self):
-        self.element_is_visible(self.locators.EXPAND_ALL_BUTTON).click()
+        self.left_click_on_element(self.locators.EXPAND_ALL_BUTTON)
 
-    @allure.step('random box click _step')
-    def click_random_checkbox(self):
+    @allure.step('click random boxes _step')
+    def click_random_checkboxes(self):
         checkboxes_list = self.elements_are_visible(self.locators.CHECKBOXES_LIST)
-        count = len(checkboxes_list) + 5
+        count = len(checkboxes_list) + randint(2, 6)
         while count > 0:
             checkbox = checkboxes_list[randint(1, len(checkboxes_list))]
             self.go_to_element(checkbox)
@@ -66,7 +67,6 @@ class CheckBoxPage(BasePage):
         for box in marked_boxes_list:
             box_title = box.find_element(By.XPATH, self.locators.CHECKBOX_TITLE)
             res.append(box_title.text)
-        # res = [title.find_element(By.XPATH, self.locators.CHECKBOX_TITLE).text for title in marked_boxes_list]
         return str(res).replace('.doc', '').replace(' ', '').lower()
 
     @allure.step('get output result _step')
@@ -75,7 +75,6 @@ class CheckBoxPage(BasePage):
         res = []
         for item in result_list:
             res.append(item.text)
-        # res = [item.text for item in result_list if len(item.text) > 0]
         return str(res).replace(' ', '').replace('F', 'f')
 
 
@@ -89,11 +88,11 @@ class RadioButtonPage(BasePage):
             'impressive': self.locators.IMPRESSIVE_RADIOBUTTON,
             'no': self.locators.NO_RADIOBUTTON
         }
-        self.element_is_visible(options[choice]).click()
+        self.left_click_on_element(options[choice])
 
     @allure.step('get output result _step')
     def get_output_result(self):
-        return self.element_is_present(self.locators.OUTPUT_RESULT).text
+        return self.get_element_text(self.locators.OUTPUT_RESULT)
 
 
 class WebTablePage(BasePage):
@@ -103,65 +102,55 @@ class WebTablePage(BasePage):
     def add_new_person(self):
         count = 1  # create a few persons
         while count > 0:
-            person_info = next(person_data_generator())
-            first_name = person_info.first_name
-            last_name = person_info.last_name
-            email = person_info.email
-            age = person_info.age
-            salary = person_info.salary
-            department = person_info.department
+            data = ud.generate_data()
             with allure.step('generate data'):
-                self.element_is_visible(self.locators.ADD_BUTTON).click()
-                self.element_is_visible(self.locators.FIRSTNAME_INPUT).send_keys(first_name)
-                self.element_is_visible(self.locators.LASTNAME_INPUT).send_keys(last_name)
-                self.element_is_visible(self.locators.EMAIL_INPUT).send_keys(email)
-                self.element_is_visible(self.locators.AGE_INPUT).send_keys(age)
-                self.element_is_visible(self.locators.SALARY_INPUT).send_keys(salary)
-                self.element_is_visible(self.locators.DEPARTMENT_INPUT).send_keys(department)
+                self.left_click_on_element(self.locators.ADD_BUTTON)
+                self.set_value(self.locators.FIRSTNAME_INPUT, data.first_name)
+                self.set_value(self.locators.LASTNAME_INPUT,data.last_name)
+                self.set_value(self.locators.EMAIL_INPUT, data.email)
+                self.set_value(self.locators.AGE_INPUT, data.age)
+                self.set_value(self.locators.SALARY_INPUT, data.salary)
+                self.set_value(self.locators.DEPARTMENT_INPUT, data.department)
             with allure.step('submit button click'):
                 self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
             count -= 1
-            return [first_name, last_name, str(age), email, str(salary), department]
+            return [data.first_name, data.last_name, str(data.age), data.email, str(data.salary), data.department]
 
     @allure.step('added person check _step')
     def check_added_person(self):
-        persons_lines = self.elements_are_present(self.locators.PERSON_LINE_IN_LIST)
-        data = [item.text.splitlines() for item in persons_lines]
+        persons_lines = self.get_elements_text(self.locators.PERSON_LINE_IN_LIST)
+        data = [item.splitlines() for item in persons_lines]
         return data
 
     @allure.step('search box input _step')
     def search_box_input(self, key_word):
-        self.element_is_visible(self.locators.SEARCH_BOX_INPUT).send_keys(key_word)
+        self.set_value(self.locators.SEARCH_BOX_INPUT, key_word)
 
     @allure.step('update person info age _step')
     def update_person_info_age(self):
-        person_info = next(person_data_generator())
-        age = person_info.age
+        data = ud.generate_data()
         with allure.step('send keys and click update'):
-            self.element_is_visible(self.locators.UPDATE_BTN).click()
-            self.element_is_visible(self.locators.AGE_FIELD_INPUT).clear()
-            self.element_is_visible(self.locators.AGE_FIELD_INPUT).send_keys(age)
-            self.element_is_visible(self.locators.SUBMIT_BTN_UPDATE).click()
-        return str(age)
+            self.left_click_on_element(self.locators.UPDATE_BTN)
+            self.set_value(self.locators.AGE_FIELD_INPUT, data.age)
+            self.left_click_on_element(self.locators.SUBMIT_BTN_UPDATE)
+        return str(data.age)
 
     @allure.step('update person info email _step')
     def update_person_info_email(self):
-        person_info = next(person_data_generator())
-        email = person_info.email
+        data =ud.generate_data()
         with allure.step('send keys and click update'):
-            self.element_is_visible(self.locators.UPDATE_BTN).click()
-            self.element_is_visible(self.locators.EMAIL_FIELD_INPUT).clear()
-            self.element_is_visible(self.locators.EMAIL_FIELD_INPUT).send_keys(email)
-            self.element_is_visible(self.locators.SUBMIT_BTN_UPDATE).click()
-        return email
+            self.left_click_on_element(self.locators.UPDATE_BTN)
+            self.set_value(self.locators.EMAIL_FIELD_INPUT, data.email)
+            self.left_click_on_element(self.locators.SUBMIT_BTN_UPDATE)
+        return data.email
 
     @allure.step('delete person info _step')
     def delete_person_info_btn(self):
-        self.element_is_visible(self.locators.DELETE_PERSON_INFO_BTN).click()
+        self.left_click_on_element(self.locators.DELETE_PERSON_INFO_BTN)
 
     @allure.step('delete info message _step')
     def check_deleted_person_message(self):
-        return self.element_is_present(self.locators.NO_ROWS_DATA).text
+        return self.get_element_text(self.locators.NO_ROWS_DATA)
 
     @allure.step('iterate on rows _step')
     def iterate_on_rows(self):
@@ -171,7 +160,7 @@ class WebTablePage(BasePage):
             position = self.element_is_present(self.locators.ROW_PER_PAGE_BTN)
             self.go_to_element(position)
             position.click()
-            self.element_is_visible((By.CSS_SELECTOR, f'option[value="{num}"]')).click()
+            self.left_click_on_element((By.CSS_SELECTOR, f'option[value="{num}"]'))
             data.append(self.check_count_rows())
         return data
 
@@ -193,11 +182,11 @@ class ButtonsPage(BasePage):
             self.right_click_action(self.element_is_visible(self.locators.RIGHT_CLICK_BTN))
             return self.check_click_on_different_buttons(self.locators.SUCCESS_RIGHT)
         if click_type == "click":
-            self.element_is_visible(self.locators.ORDINARY_CLICK_BTN).click()
+            self.left_click_on_element(self.locators.ORDINARY_CLICK_BTN)
             return self.check_click_on_different_buttons(self.locators.SUCCESS_CLICK_ME)
 
     def check_click_on_different_buttons(self, element):
-        return self.element_is_visible(element).text
+        return self.get_element_text(element)
 
 
 class LinksPage(BasePage):
@@ -230,7 +219,7 @@ class UploadAndDownload(BasePage):
 
     def upload_file(self, path):
         self.element_is_visible(self.locators.UPLOAD_FILE).send_keys(path)
-        get_result_path = self.element_is_visible(self.locators.UPLOADED_RESULT).text
+        get_result_path = self.get_element_text(self.locators.UPLOADED_RESULT)
         return get_result_path.split('\\')[-1]  # get name only
 
     def download_file(self):

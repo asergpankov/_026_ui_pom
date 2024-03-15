@@ -1,5 +1,7 @@
-from generator.generator import person_data_generator
-from locators.alerts_frame_windows_page_locators import BrowserWindowsPageLocators, AlertsPageLocators, FramesPageLocators, \
+# from generator.generator import person_data_generator
+from data.data import UserData as ud
+from locators.alerts_frame_windows_page_locators import BrowserWindowsPageLocators, AlertsPageLocators, \
+    FramesPageLocators, \
     NestedFramesPageLocators, ModalDialogsPageLocators
 from pages.base_page import BasePage
 from time import sleep, monotonic
@@ -40,27 +42,27 @@ class AlertsPage(BasePage):
         return alert_text.text, alert_time
 
     def check_alert_confirm(self):
-        self.element_is_visible(self.locators.ALRT_CONFIRM_BTN).click()
+        self.left_click_on_element(self.locators.ALRT_CONFIRM_BTN)
         alert = self.driver.switch_to.alert
         way = choice(['accept', 'dismiss'])
         if way == 'accept':
             alert.accept()
-            result_text = self.element_is_present(self.locators.ALRT_CONFIRM_RESULT).text
+            result_text = self.get_element_text(self.locators.ALRT_CONFIRM_RESULT)
             return result_text
         if way == 'dismiss':
             alert.dismiss()
-            result_text = self.element_is_present(self.locators.ALRT_CONFIRM_RESULT).text
+            result_text = self.get_element_text(self.locators.ALRT_CONFIRM_RESULT)
             return result_text
 
     def check_alert_promt(self):
-        person_info = next(person_data_generator())
-        sentence = person_info.sentence
-        self.element_is_visible(self.locators.ALRT_PROMT_BTN).click()
+
+        data = ud.generate_data()
+        self.left_click_on_element(self.locators.ALRT_PROMT_BTN)
         alert = self.driver.switch_to.alert
-        alert.send_keys(sentence)
+        alert.send_keys(data.sentence)
         alert.accept()
-        result_text = self.element_is_present(self.locators.ALRT_PROMT_RESULT).text
-        return sentence, result_text
+        result_text = self.get_element_text(self.locators.ALRT_PROMT_RESULT)
+        return data.sentence, result_text
 
 
 class FramesPage(BasePage):
@@ -95,7 +97,7 @@ class ModalDialogsPage(BasePage):
     def check_small_and_large_btns_names(self):
         sm_btn_name = self.element_is_visible(self.locators.SMALL_MODAL_BTN).text
         lg_btn_name = self.element_is_visible(self.locators.LARGE_MODAL_BTN).text
-        return sm_btn_name,  lg_btn_name
+        return sm_btn_name, lg_btn_name
 
     def check_small_modal_btn(self):
         self.element_is_visible(self.locators.SMALL_MODAL_BTN).click()
@@ -120,5 +122,3 @@ class ModalDialogsPage(BasePage):
         lg_sign = self.element_is_visible(self.locators.LARGE_MODAL_X_SIGN).text
         self.element_is_visible(self.locators.LARGE_MODAL_X_BTN).click()
         return [sm_sign, lg_sign]
-
-

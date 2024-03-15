@@ -76,6 +76,18 @@ class BasePage:
         action.drag_and_drop(source, target)
         action.perform()
 
+    def set_value(self, element, value):
+        self.element_is_visible(element).clear()
+        self.element_is_visible(element).send_keys(value)
+
+    def left_click_on_element(self, element):
+        self.element_is_visible(element)
+        self.element_is_clickable(element).click()
+
+    def get_element_text(self, element):
+        element_text = self.element_is_visible(element).text
+        return element_text
+
     def get_elements_text(self, elements):
         elements_on_page = self.elements_are_visible(elements)
         elements_names = [name.text for name in elements_on_page]

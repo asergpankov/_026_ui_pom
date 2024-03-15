@@ -1,6 +1,6 @@
 from itertools import product
 from random import randint, choice
-from data.data import Person, Color, Date_and_Time, Group_Option
+from data.data import UserData, Color, Date_and_Time, Group_Option
 from faker import Faker
 
 fake = Faker("ru_RU")
@@ -8,30 +8,6 @@ fake_eng = Faker("en_US")
 
 
 # Faker.seed(0)
-
-
-def person_data_generator():
-    yield Person(
-        full_name=fake.name(),
-        first_name=fake.first_name(),
-        last_name=fake.last_name(),
-        age=randint(16, 66),
-        salary=randint(1500, 5100),
-        department=fake.job(),
-        email=fake.email(),
-        current_address=fake.address(),
-        permanent_address=fake.address(),
-        mobile=fake.msisdn(),
-        date_of_birth=fake.date(),
-        mac_address=fake.hexify(text='MAC Address: ^^:^^:^^:^^:^^:^^', upper=True),         # 'MAC Address: CD:18:FC:9F:B6:49'
-        product_number=fake.bothify(text='Product Number: ????-########', letters='ABCDE'), # 'Product Number: DCEB-66048764'
-        password=fake.bothify(text='?????##?##?##', letters='ABCDE!@#$%^&zxc'),
-        # unique_int=fake.unique.random_int(min=1, max=5),
-        # ipv4_private=fake.ipv4_private(), # '166.186.169.69'
-        # ipv4_public=fake.ipv4_public(),
-        sentence=fake.sentence(nb_words=10)
-    )
-
 
 def color_generator():
     yield Color(
