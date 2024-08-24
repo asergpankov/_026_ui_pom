@@ -1,10 +1,5 @@
-from selenium.common import TimeoutException
-from selenium.webdriver import Keys
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.by import By
 from time import sleep
-from random import choice, sample, randint
-from generator.generator import color_generator, date_and_time_generator, group_option_generator, person_data_generator
+from src.data_provider import person_data_generator
 
 from locators.book_store_application_page_locators import BookStoreApplicationPageLocators
 from pages.base_page import BasePage

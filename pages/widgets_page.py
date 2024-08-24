@@ -1,10 +1,9 @@
 from selenium.common import TimeoutException
 from selenium.webdriver import Keys
-from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from time import sleep
 from random import choice, sample, randint
-from generator.generator import color_generator, date_and_time_generator, group_option_generator
+from src.data_provider import generate_data, generate_date_and_time
 
 from locators.widgets_page_locators import AccordianPageLocators, AutoCompletePageLocators, DatePickerPageLocators, \
     SliderPageLocators, ProgressBarPageLocators, TabsPageLocators, ToolTipsPageLocators, MenuPageLocators, \
@@ -41,7 +40,7 @@ class AutoCompletePage(BasePage):
     locators = AutoCompletePageLocators()
 
     def fill_colors_multiply_input(self):
-        colors_list = next(color_generator()).colors_list
+        colors_list = next(generate_data()).colors_list
         colors = sample(colors_list, k=randint(2, len(colors_list)))
         for color in colors:
             multy_input = self.element_is_clickable(self.locators.MULTI_INPUT)
@@ -87,7 +86,7 @@ class AutoCompletePage(BasePage):
         return clrs_before_remove, clrs_after_remove
 
     def fill_color_single_input(self):
-        color = choice(next(color_generator()).colors_list)
+        color = choice(next(generate_data()).colors_list)
         single_input = self.element_is_visible(self.locators.SINGLE_INPUT)
         single_input.send_keys(color)
         single_input.send_keys(Keys.ENTER)
@@ -102,7 +101,7 @@ class DatePickerPage(BasePage):
     locators = DatePickerPageLocators()
 
     def set_date_on_calendar(self):
-        date_gen = next(date_and_time_generator())
+        date_gen = next(generate_date_and_time())
         date_in_box = self.element_is_visible(self.locators.SELECT_DATE_INPUT)
         date_in_box.click()
         get_date_before = date_in_box.get_attribute('value')
@@ -113,7 +112,7 @@ class DatePickerPage(BasePage):
         return get_date_before, get_date_after
 
     def set_date_and_time_on_calendar(self):
-        date_gen = next(date_and_time_generator())
+        date_gen = next(generate_date_and_time())
         date_in_box = self.element_is_visible(self.locators.DATE_AND_TIME_INPUT)
         get_date_before = date_in_box.get_attribute('value')
         date_in_box.click()
@@ -259,7 +258,7 @@ class SelectMenuPage(BasePage):
         count = len(options) + 3
         result_list = []
         while count > 0:
-            colors_gen = next(color_generator()).colors_list
+            colors_gen = next(generate_data()).colors_list
             color = choice(colors_gen).capitalize()
             color_box = self.element_is_clickable(self.locators.COLOR_SELECT)
             color_box.click()

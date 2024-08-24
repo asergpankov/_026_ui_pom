@@ -1,12 +1,8 @@
-import base64
-import os
 from random import randint, choice
-import time
 from src.enums.global_enums import StudentRegistrationFormPageEnums
-import requests
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
-from generator.generator import person_data_generator
+from src.data_provider import person_data_generator
 from locators.practice_form_page_locators import StudentRegistrationFormPageLocators
 from pages.base_page import BasePage
 from time import sleep

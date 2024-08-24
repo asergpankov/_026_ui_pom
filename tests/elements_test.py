@@ -1,9 +1,9 @@
 import os
 from random import randint
-from time import sleep
 
 import allure
 import pytest
+
 from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage, WebTablePage, ButtonsPage, LinksPage, \
     UploadAndDownload, DynamicProperties
 
