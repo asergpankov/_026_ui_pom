@@ -1,5 +1,5 @@
 from random import randint, choice
-from src.enums.global_enums import StudentRegistrationFormPageEnums
+from src.global_enums.global_enums import StudentRegistrationFormPageEnums
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from src.data_provider import person_data_generator

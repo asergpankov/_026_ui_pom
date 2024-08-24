@@ -1,7 +1,7 @@
 import pytest
 
 from pages.interactions_page import SortablePage, SelectablePage, ResizablePage, DroppablePage
-from src.enums.global_enums import SelectablePageEnums
+from src.global_enums.global_enums import SelectablePageEnums
 
 
 class TestInteractionsPage:

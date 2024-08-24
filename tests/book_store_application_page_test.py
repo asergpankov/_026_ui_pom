@@ -2,7 +2,7 @@ import pytest
 
 from pages.book_store_application_page import LoginPage
 from pages.elements_page import TextBoxPage
-from src.enums.global_enums import LoginPageEnums
+from src.global_enums.global_enums import LoginPageEnums
 import os
 from dotenv import load_dotenv
 

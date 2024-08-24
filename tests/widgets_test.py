@@ -2,7 +2,7 @@ import pytest
 from datetime import date
 from pages.widgets_page import AccordianPage, AutoCompletePage, DatePickerPage, SliderPage, ProgressBarPage, TabsPage, \
     ToolTipsPage, MenuPage, SelectMenuPage
-from src.enums.global_enums import MenuPageEnums
+from src.global_enums.global_enums import MenuPageEnums
 
 
 class TestWidgetsPage:
