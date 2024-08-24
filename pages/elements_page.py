@@ -106,7 +106,7 @@ class WebTablePage(BasePage):
             with allure.step('generate data'):
                 self.left_click_on_element(self.locators.ADD_BUTTON)
                 self.set_value(self.locators.FIRSTNAME_INPUT, data.first_name)
-                self.set_value(self.locators.LASTNAME_INPUT,data.last_name)
+                self.set_value(self.locators.LASTNAME_INPUT, data.last_name)
                 self.set_value(self.locators.EMAIL_INPUT, data.email)
                 self.set_value(self.locators.AGE_INPUT, data.age)
                 self.set_value(self.locators.SALARY_INPUT, data.salary)
@@ -137,7 +137,7 @@ class WebTablePage(BasePage):
 
     @allure.step('update person info email _step')
     def update_person_info_email(self):
-        data =ud.generate_data()
+        data = ud.generate_data()
         with allure.step('send keys and click update'):
             self.left_click_on_element(self.locators.UPDATE_BTN)
             self.set_value(self.locators.EMAIL_FIELD_INPUT, data.email)
@@ -176,10 +176,10 @@ class ButtonsPage(BasePage):
     @allure.step('click on different buttons _step')
     def click_on_different_buttons(self, click_type):
         if click_type == "double_left":
-            self.double_click_action(self.element_is_visible(self.locators.DOUBLE_CLICK_BTN))
+            self.double_click_on(self.element_is_visible(self.locators.DOUBLE_CLICK_BTN))
             return self.check_click_on_different_buttons(self.locators.SUCCESS_DOUBLE)
         if click_type == "right":
-            self.right_click_action(self.element_is_visible(self.locators.RIGHT_CLICK_BTN))
+            self.right_click_on(self.element_is_visible(self.locators.RIGHT_CLICK_BTN))
             return self.check_click_on_different_buttons(self.locators.SUCCESS_RIGHT)
         if click_type == "click":
             self.left_click_on_element(self.locators.ORDINARY_CLICK_BTN)
@@ -245,9 +245,11 @@ class DynamicProperties(BasePage):
         return True
 
     def check_color_changed(self):
+        time_need_to_wait_for_color_changed_sec = 5
+
         get_clr = self.element_is_visible(self.locators.COLOR_CHANGE_BTN)
         clr_before = get_clr.value_of_css_property('color')
-        sleep(5)
+        sleep(time_need_to_wait_for_color_changed_sec)
         clr_after = get_clr.value_of_css_property('color')
         return clr_before, clr_after
 

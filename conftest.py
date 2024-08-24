@@ -1,42 +1,59 @@
-import time
-import webdriver_manager.chrome
+import os
+import warnings
 
-import allure
 import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from webdriver_manager.chrome import ChromeDriverManager
-import warnings
-from random import random
-
-from webdriver_manager.firefox import GeckoDriverManager
 
 
 @pytest.fixture(scope='function')
-def driver():
+def driver_remote():
     warnings.filterwarnings("ignore", category=DeprecationWarning)
-    driver = webdriver.Edge()
+
+    job_name = os.environ['CI_JOB_NAME']
+    match job_name:
+        case 'chrome tests':
+            options = webdriver.ChromeOptions()
+            options.add_argument('--disable-gpu')
+            options.add_argument('--headless=new')
+            options.add_argument('--no-sandbox')
+            options.add_argument('--incognito')
+            options.add_argument('--disable-dev-shm-usage')
+            driver = webdriver.Remote(command_executor='http://selenium__standalone-chrome:4444/wd/hub',
+                                      options=options)
+        case 'firefox tests':
+            options = webdriver.FirefoxOptions()
+            options.add_argument('--disable-gpu')
+            options.add_argument('--headless=new')
+            options.add_argument('--no-sandbox')
+            options.add_argument('--incognito')
+            options.add_argument('--disable-dev-shm-usage')
+            driver = webdriver.Remote(command_executor='http://selenium__standalone-firefox:4444/wd/hub',
+                                      options=options)
+
+        # case _:
+        #     raise NotImplementedError('Something went wrong')
+
     driver.maximize_window()
     yield driver
     driver.quit()
 
 
-@pytest.fixture(scope='function')
-def driver2():
+@pytest.fixture(scope='function', params=['chrome', 'firefox', 'edge'])
+def driver(request):
     warnings.filterwarnings("ignore", category=DeprecationWarning)
-    driver = webdriver.Chrome()
-    # driver_service = Service(ChromeDriverManager().install())
-    options = Options()
-    # options.add_argument() # user_agent.random
-    # options.headless=True
-    # options.add_argument('--remote-debugging-port=9222')
-    # options.add_argument('--no-sandbox')
 
-    # driver = Chrome(service=Service(ChromeDriverManager().install()),
-    #                 options=options)
-    # driver.set_window_size(1400, 1000)
+    if request.param == 'chrome':
+        driver = webdriver.Chrome()
+    if request.param == 'firefox':
+        options = webdriver.FirefoxOptions()
+        driver = webdriver.Firefox(options=options)
+    if request.param == 'edge':
+        # options.add_argument('--headless=new')
+        driver = webdriver.Edge(options=options)
+    request.cls.driver = driver
+
     driver.maximize_window()
+    # driver.set_window_size(1400, 1000)
     # attach = driver.get_screenshot_as_png()
     # allure.attach(attach, name=f'screenshot{driver.session_id}', attachment_type=allure.attachment_type.PNG)
     # allure.attach(attach, name=f'screenshot{time.strftime("%Y-%m-%d-%H.%M")}', attachment_type=allure.attachment_type.PNG)
