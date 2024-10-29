@@ -4,6 +4,8 @@ import warnings
 import pytest
 from selenium import webdriver
 
+from src.data_provider import Group_Option
+
 
 @pytest.fixture(scope='function')
 def driver_remote():
@@ -71,3 +73,8 @@ def tmp_file(tmp_path):
 # def configure(request):
 #     env = request.config.getoption('--env')
 #     ...
+
+
+@pytest.fixture()
+def group_data():
+    return Group_Option.generate_group_option()

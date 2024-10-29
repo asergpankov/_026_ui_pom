@@ -1,6 +1,7 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from itertools import product
 from random import choice
+from typing import Any
 
 from faker import Faker
 
@@ -51,3 +52,23 @@ class Group_Option:
             options_list=["Group 1, option 1", "Group 1, option 2", "Group 2, option 1", "Group 2, option 2",
                           "A root option", "Another root option"]
         )
+
+
+@dataclass
+class Some_Option:
+    current_id = 0
+
+    id: int = field(init=False)
+    # id: int
+    name: Any = None
+
+    def __post_init__(self):
+        print('Some_Options: post_init')
+        Some_Option.current_id += 1
+        self.id = Some_Option.current_id
+
+
+some1 = Some_Option('some1')
+some2 = Some_Option('some2')
+print(some1)
+print(some2)
